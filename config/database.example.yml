@@ -1,0 +1,21 @@
+default: &default
+  adapter: mysql2
+  host: localhost
+  username: 
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: smuggler_covalent
+
+test:
+  <<: *default
+  database: test_smuggler_covalent
+
+production:
+  <<: *default
+  database: smuggler_covalent
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>

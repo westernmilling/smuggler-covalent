@@ -1,0 +1,28 @@
+<%= content_for :scripts do %>
+<script>
+  var product_source = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: '<%= product_typeahead_path %>.json?q=%QUERY'
+  });
+   
+  product_source.initialize();
+   
+  $('.typeahead').typeahead(null, {
+    name: 'product-typeahead',
+    displayKey: 'name',
+    source: product_source.ttAdapter()
+  }).
+  on('typeahead:autocompleted', function($e, datum) { $('input[id*=product_id]').val(datum.id); });
+</script>
+<% end %>
+<%= render :partial => '/model_errors', :locals => { :model => model } if model.errors.any? %>
+
+<%= form.input :product_id, :as => :hidden, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :product_display_string, 
+  :label => 'Product',
+  :controls_html => { class: 'col-sm-4' }, 
+  :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find an Product' } %>
+<%= form.input :sender_value, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :source_field, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :source_value, :controls_html => { class: 'col-sm-4' } %>

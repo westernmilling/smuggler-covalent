@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - 2.1.5
+script:
+  - npm install -g bower
+  - bundle exec rake db:schema:load
+  - bundle exec rake bower:install
+  - bundle exec rspec -fd
+before_script:
+  - cp config/database.travis.yml config/database.yml
+  - cp config/secrets.travis.yml config/secrets.yml
+  - mysql -e 'create database smuggler_covalent_test;'
