@@ -17,8 +17,6 @@ RSpec.describe CreateProduct, :type => :interactor do
     describe 'context' do
       its(:success?) { is_expected.to be_truthy }
       its(:message) { is_expected.to match(/success/i) }
-      its(:success?) { is_expected.to be_truthy }
-      its(:message) { is_expected.to match(/success/i) }
       its(:product) { is_expected.to be_present }
     end
 

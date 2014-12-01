@@ -1,0 +1,4 @@
+<%= render :partial => '/model_errors', :locals => { :model => model } if model.errors.any? %>
+
+<%= form.input :upload_file, :as => :file, :controls_html => { class: 'col-sm-4' } %>
+
