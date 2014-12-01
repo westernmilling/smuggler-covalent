@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141130024523) do
+ActiveRecord::Schema.define(version: 20141130155913) do
 
   create_table "entities", force: true do |t|
     t.string   "cached_full_name",            null: false
@@ -38,6 +38,18 @@ ActiveRecord::Schema.define(version: 20141130024523) do
     t.string   "sender_value", null: false
     t.string   "source_field", null: false
     t.string   "source_value", null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "import_batches", force: true do |t|
+    t.string   "upload_file_name"
+    t.string   "upload_content_type"
+    t.integer  "upload_file_size"
+    t.datetime "upload_updated_at"
+    t.integer  "user_id",             null: false
+    t.string   "status",              null: false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"

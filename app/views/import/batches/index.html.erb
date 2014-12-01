@@ -1,0 +1,27 @@
+<table class="table table-striped table-with-link-column">
+  <thead>
+  <tr>
+    <th>File</th>
+    <th>Status</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @import_batches.each do |import_batch| %>
+    <tr>
+      <td><%= import_batch.file %></td>
+      <td><%= import_batch.status %></td>
+      <td nowrap>              
+        <%= link_to [import_batch, :return_url => return_url(request.original_url)],
+                    class: 'btn btn-default btn-icon btn-sm hidden-print' do %>
+            <span class="glyphicon glyphicon-eye-open"></span>
+        <% end %>
+      </td>
+    </tr>
+  <% end.empty? %>
+    <tr>
+      <td colspan="2">No import batches found</td><td></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
