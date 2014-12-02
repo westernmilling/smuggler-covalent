@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  root 'import/batches#index'
+
   get '/entity_typeahead', :as => :entity_typeahead, :to => 'entity_typeahead#index'
   get '/product_typeahead', :as => :product_typeahead, :to => 'product_typeahead#index'
   
