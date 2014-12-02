@@ -1,17 +1,19 @@
 require 'rails_helper'
 
 feature 'user creates new import batch' do
+  background { sign_in_as(user) }
+
+  given(:file) { build(:import_file) }
+  given(:user) { create(:user, :confirmed) }
+
   scenario 'visit new page' do
     visit new_import_batch_path
 
     expect(page).to have_content(/import batch/i)
   end
 
-  given(:file) { build(:import_file) }
-  given(:user) { create(:user, :confirmed) }
-
   scenario 'save with valid details' do
-    sign_in
+    # sign_in
 
     visit new_import_batch_path
 
@@ -33,6 +35,6 @@ feature 'user creates new import batch' do
   # scenario 'user is not permitted' do
 
   def sign_in
-      login_as(user, :scope => :user)
-    end
+    login_as(user, :scope => :user)
+  end
 end

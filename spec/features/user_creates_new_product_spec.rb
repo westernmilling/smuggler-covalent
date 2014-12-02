@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 feature 'user creates new product' do
+  background { sign_in_as(user) }
+
+  given(:user) { create(:user, :confirmed) }
+
   scenario 'with valid details' do
     visit new_product_path
 
