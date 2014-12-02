@@ -19,9 +19,18 @@ module ControllerMacros
       sign_in user
     end
   end
+
+end
+
+# Temp helper, clean this up a bit
+module FeatureHelpers
+  def sign_in_as(user)
+    login_as(user, :scope => :user)
+  end
 end
 
 RSpec.configure do |config|
   # config.include Devise::TestHelpers, :type => :controller
   # config.extend ControllerMacros, :type => :controller
+  config.include FeatureHelpers#, :type => :feature
 end

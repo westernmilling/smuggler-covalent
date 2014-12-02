@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 feature 'user creates new entity' do
+  background { sign_in_as(user) }
+
+  given(:user) { create(:user, :confirmed) }
+
   scenario 'with valid details' do
     visit new_entity_path
 
@@ -28,5 +32,5 @@ feature 'user creates new entity' do
 
     expect(page).not_to have_content(/created/i)
   end
-  
+
 end

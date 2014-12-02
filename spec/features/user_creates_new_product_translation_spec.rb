@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 feature 'user creates new product translation' do
+  background { sign_in_as(user) }
+
+  given(:user) { create(:user, :confirmed) }
+  
   scenario 'visit new page' do
     visit new_product_translation_path
 
