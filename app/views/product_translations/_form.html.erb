@@ -13,6 +13,7 @@
     displayKey: 'name',
     source: product_source.ttAdapter()
   }).
+  on('typeahead:selected', function($e, datum) { $('input[id*=product_id]').val(datum.id); });
   on('typeahead:autocompleted', function($e, datum) { $('input[id*=product_id]').val(datum.id); });
 </script>
 <% end %>
@@ -22,7 +23,7 @@
 <%= form.input :product_display_string, 
   :label => 'Product',
   :controls_html => { class: 'col-sm-4' }, 
-  :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find an Product' } %>
+  :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find a Product' } %>
 <%= form.input :sender_value, :controls_html => { class: 'col-sm-4' } %>
 <%= form.input :source_field, :controls_html => { class: 'col-sm-4' } %>
 <%= form.input :source_value, :controls_html => { class: 'col-sm-4' } %>
