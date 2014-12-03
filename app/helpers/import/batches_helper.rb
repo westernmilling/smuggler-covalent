@@ -1,2 +1,0 @@
-module Import::BatchesHelper
-end

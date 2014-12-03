@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141130155913) do
+ActiveRecord::Schema.define(version: 20141203134815) do
 
   create_table "entities", force: true do |t|
     t.string   "cached_full_name",            null: false
@@ -71,6 +71,27 @@ ActiveRecord::Schema.define(version: 20141130155913) do
     t.string   "reference",               null: false
     t.string   "source",                  null: false
     t.string   "uuid",         limit: 36, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "unit_of_measure_translations", force: true do |t|
+    t.integer  "unit_of_measure_id", null: false
+    t.string   "sender_value",       null: false
+    t.string   "source_field",       null: false
+    t.string   "source_value",       null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "unit_of_measures", force: true do |t|
+    t.integer  "conversion_to_pounds",            null: false
+    t.string   "name",                            null: false
+    t.string   "reference",                       null: false
+    t.string   "source",                          null: false
+    t.string   "uuid",                 limit: 36, null: false
+    t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

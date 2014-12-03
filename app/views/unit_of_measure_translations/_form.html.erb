@@ -1,0 +1,29 @@
+<%= content_for :scripts do %>
+<script>
+  var uom_source = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: '<%= unit_of_measure_typeahead_path %>.json?q=%QUERY'
+  });
+   
+  uom_source.initialize();
+   
+  $('.typeahead').typeahead(null, {
+    name: 'uom-typeahead',
+    displayKey: 'name',
+    source: uom_source.ttAdapter()
+  }).
+  on('typeahead:selected', function($e, datum) { $('input[id*=unit_of_measure_id]').val(datum.id); }).
+  on('typeahead:autocompleted', function($e, datum) { $('input[id*=unit_of_measure_id]').val(datum.id); });
+</script>
+<% end %>
+<%= render :partial => '/model_errors', :locals => { :model => model } if model.errors.any? %>
+
+<%= form.input :unit_of_measure_id, :as => :hidden, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :unit_of_measure_display_string, 
+  :label => 'Unit of Measure',
+  :controls_html => { class: 'col-sm-4' }, 
+  :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find a Unit of Measure' } %>
+<%= form.input :sender_value, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :source_field, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :source_value, :controls_html => { class: 'col-sm-4' } %>
