@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :price_translations
   resources :products
   resources :product_translations
+  resources :quantity_translations
   resources :unit_of_measures
   resources :unit_of_measure_translations
 end

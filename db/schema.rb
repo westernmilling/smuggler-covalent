@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203222716) do
+ActiveRecord::Schema.define(version: 20141204131856) do
 
   create_table "entities", force: true do |t|
     t.string   "cached_full_name",            null: false
@@ -79,6 +79,14 @@ ActiveRecord::Schema.define(version: 20141203222716) do
     t.string   "reference",               null: false
     t.string   "source",                  null: false
     t.string   "uuid",         limit: 36, null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "quantity_translations", force: true do |t|
+    t.string   "sender_value", null: false
+    t.string   "expression",   null: false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
