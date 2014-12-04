@@ -8,7 +8,7 @@ feature 'user creates new product translation' do
   scenario 'visit new page' do
     visit new_product_translation_path
 
-    # TODO: Add some expectations here
+    expect(page).to have_content(/new product translation/i)
   end
 
   # TODO: Add a javascript driver so we can test the Entity typeahead
