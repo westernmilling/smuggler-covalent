@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
   resources :entities
   resources :entity_translations
+  resources :price_translations
   resources :products
   resources :product_translations
   resources :unit_of_measures

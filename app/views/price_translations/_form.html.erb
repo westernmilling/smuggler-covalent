@@ -1,0 +1,4 @@
+<%= render :partial => '/model_errors', :locals => { :model => model } if model.errors.any? %>
+
+<%= form.input :sender_value, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :expression, :controls_html => { class: 'col-sm-4' } %>
