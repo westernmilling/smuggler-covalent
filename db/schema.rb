@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20141205152551) do
     t.string   "upload_content_type"
     t.integer  "upload_file_size"
     t.datetime "upload_updated_at"
-    t.integer  "user_id",             null: false
+    t.integer  "created_by_user_id",  null: false
     t.string   "status",              null: false
     t.datetime "deleted_at"
     t.datetime "created_at"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20141205152551) do
     t.integer  "quantity",                                    null: false
     t.decimal  "unit_price",         precision: 13, scale: 4, null: false
     t.integer  "unit_of_measure_id",                          null: false
+    t.integer  "created_by_user_id",                          null: false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -102,7 +103,7 @@ ActiveRecord::Schema.define(version: 20141205152551) do
     t.datetime "earliest_request_date",            null: false
     t.datetime "latest_request_date",              null: false
     t.string   "status",                limit: 32, null: false
-    t.integer  "user_id",                          null: false
+    t.integer  "created_by_user_id",               null: false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
