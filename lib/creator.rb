@@ -3,7 +3,7 @@ module Interactor::Creator
     base.class_eval do
       include Interactor
 
-      before :create_model_instance
+      before :initialize_model_instance
       before :create
       before :validate
 
@@ -14,9 +14,15 @@ module Interactor::Creator
         end
         @clazz
       end
+
+      def create_with_params
+        context.to_h
+      end
+
+      def create ; end
       
-      def create_model_instance
-        self.context[clazz.name.underscore.to_sym] = clazz.new(context.to_h)
+      def initialize_model_instance
+        self.context[clazz.name.underscore.to_sym] = clazz.new(create_with_params)
       end
 
       def model
@@ -27,6 +33,7 @@ module Interactor::Creator
       #   self.context[clazz.name.underscore.to_sym] = value
       # end
 
+      # Prevalidate the new model before attempting to persist.
       def validate ; end
 
     end

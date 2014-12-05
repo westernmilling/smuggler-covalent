@@ -10,7 +10,6 @@ class Import::BatchesController < ApplicationController
         :user => current_user)
 
       if context.success?
-        # notice_redirect(import_batch, 'Batch successfully created', [import_batch])
         notice_redirect(context.batch, context.message, [context.batch])
       else
         render :new

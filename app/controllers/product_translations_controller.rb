@@ -33,6 +33,8 @@ class ProductTranslationsController < ApplicationController
         :sender_value,
         :source_field,
         :source_value)
+  rescue ActionController::ParameterMissing
+    {}
   end
 
 end

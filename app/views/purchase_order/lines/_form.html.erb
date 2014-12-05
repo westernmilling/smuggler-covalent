@@ -1,0 +1,55 @@
+<%= content_for :scripts do %>
+<script>  
+  var product_source = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: '<%= product_typeahead_path %>.json?q=%QUERY'
+  });
+   
+  product_source.initialize();
+   
+  $('.typeahead').typeahead(null, {
+    name: 'product-typeahead',
+    displayKey: 'name',
+    source: product_source.ttAdapter()
+  }).
+  on('typeahead:selected', function($e, datum) { $('input[id*=product_id]').val(datum.id); });
+  on('typeahead:autocompleted', function($e, datum) { $('input[id*=product_id]').val(datum.id); });
+
+  var uom_source = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: '<%= unit_of_measure_typeahead_path %>.json?q=%QUERY'
+  });
+   
+  uom_source.initialize();
+   
+  $('.typeahead').typeahead(null, {
+    name: 'uom-typeahead',
+    displayKey: 'name',
+    source: uom_source.ttAdapter()
+  }).
+  on('typeahead:selected', function($e, datum) { $('input[id*=unit_of_measure_id]').val(datum.id); }).
+  on('typeahead:autocompleted', function($e, datum) { $('input[id*=unit_of_measure_id]').val(datum.id); });
+</script>
+<% end %>
+<%= render :partial => '/model_errors', :locals => { :model => model } if model.errors.any? %>
+
+<%= form.input :purchase_order_id, :as => :hidden, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :product_id, :as => :hidden, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :product_display_string, 
+  :label => 'Product',
+  :controls_html => { class: 'col-sm-4' }, 
+  :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find a product' } %>
+<%= form.input :unit_of_measure_id, :as => :hidden, :controls_html => { class: 'col-sm-4' } %>
+<%= form.input :unit_of_measure_display_string, 
+  :label => 'UOM',
+  :controls_html => { class: 'col-sm-4' }, 
+  :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find a unit of measure' } %>
+
+<%= form.input :quantity, 
+  :controls_html => { class: 'col-sm-4' }, 
+  :input_html => { :type => :number } %>
+<%= form.input :unit_price, 
+  :controls_html => { class: 'col-sm-4' }, 
+  :input_html => { :type => :number } %>

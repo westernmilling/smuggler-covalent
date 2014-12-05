@@ -21,3 +21,12 @@
 
 en:
   hello: "Hello world"
+
+en:
+  activerecord:
+    errors:
+      models:
+        purchase_order:
+          attributes:
+            date:
+              not_a_date: must be a valid date

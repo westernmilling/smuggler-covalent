@@ -3,6 +3,9 @@ class EntityDecorator < Draper::Decorator
 
   # def long_name
 
+  def display_string
+    full_name
+  end
 
   # TODO: Replace this with long_name and the models cached_full_name
   # with cached_long_name

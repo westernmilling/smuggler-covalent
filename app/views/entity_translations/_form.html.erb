@@ -12,31 +12,18 @@
     name: 'entity-typeahead',
     displayKey: 'cached_full_name',
     source: entity_source.ttAdapter()
-  }).on('typeahead:autocompleted', function($e, datum) { $('input[id*=entity_id]').val(datum.id); });
+  }).
+  on('typeahead:selected', function($e, datum) { $('input[id*=entity_id]').val(datum.id); });
+  on('typeahead:autocompleted', function($e, datum) { $('input[id*=entity_id]').val(datum.id); });
 </script>
 <% end %>
-<% if model.errors.any? %>
-    <div id="error_explanation" class="alert alert-danger">
-      <h4 class="alert-heading">
-        <% if local_assigns.has_key?(:error_message) && error_message %>
-        <%= error_message %>
-        <% else %>
-        <%= pluralize(model.errors.count, 'error') %> prohibited the item from being changed:
-        <% end %>
-      </h4>
-      <ul>
-        <% model.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-<% end %>
+<%= render :partial => '/model_errors', :locals => { :model => model } if model.errors.any? %>
 
 <%= form.input :entity_id, :as => :hidden, :controls_html => { class: 'col-sm-4' } %>
 <%= form.input :entity_string, 
   :label => 'Entity',
   :controls_html => { class: 'col-sm-4' }, 
-  :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find an Entity' } %>
+  :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find an entity' } %>
 <%= form.input :sender_value, :controls_html => { class: 'col-sm-4' } %>
 <%= form.input :source_field, :controls_html => { class: 'col-sm-4' } %>
 <%= form.input :source_value, :controls_html => { class: 'col-sm-4' } %>
