@@ -1,9 +1,9 @@
 class CreateImportBatches < ActiveRecord::Migration
   def change
     create_table :import_batches do |t|
-      t.attachment :upload
-      t.references :user, :null => false
+      t.integer :created_by_user_id, :null => false
       t.string :status, :null => false
+      t.attachment :upload
 
       t.datetime :deleted_at
       t.timestamps

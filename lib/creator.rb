@@ -15,6 +15,10 @@ module Interactor::Creator
         @clazz
       end
 
+      def context_key
+        clazz.name.gsub(/(::)/, '').underscore.to_sym
+      end
+
       def create_with_params
         context.to_h
       end
@@ -22,11 +26,11 @@ module Interactor::Creator
       def create ; end
       
       def initialize_model_instance
-        self.context[clazz.name.underscore.to_sym] = clazz.new(create_with_params)
+        self.context[context_key] = clazz.new(create_with_params)
       end
 
       def model
-        self.context[clazz.name.underscore.to_sym]
+        self.context[context_key]
       end
 
       # def model=(value)
@@ -34,7 +38,11 @@ module Interactor::Creator
       # end
 
       # Prevalidate the new model before attempting to persist.
-      def validate ; end
+      def validate 
+        unless model.valid?
+          context.fail!(:message => 'Invalid details')
+        end
+      end
 
     end
   end

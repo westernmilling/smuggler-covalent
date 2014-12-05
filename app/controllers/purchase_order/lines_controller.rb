@@ -1,18 +1,26 @@
 class PurchaseOrder::LinesController < ApplicationController
   respond_to(:html)
 
-  before_filter :set_purchase_order
+  before_filter :set_purchase_order, :only => [:create, :new]
 
   def create
-    context = CreatePurchaseOrderLine.call(
-      line_params.merge(:user => current_user))
+    context = nil
+    PurchaseOrder::Line.transaction do
+      context = CreatePurchaseOrderLine.call(
+        line_params.merge(:created_by => current_user))
+    end
 
     if context.success?
+      puts 'success and redirect'
       notice_redirect(context.purchase_order_line, 
         context.message, 
         [context.purchase_order_line])
     else
-      respond_with(@purchase_order_line = context.purchase_order_line.decorate)
+      @purchase_order_line = context.purchase_order_line.decorate
+
+      render :new
+      # REVIEW: For some reason respond_with was causing a redirect
+      # respond_with(@purchase_order_line = context.purchase_order_line.decorate)
     end
   end
 

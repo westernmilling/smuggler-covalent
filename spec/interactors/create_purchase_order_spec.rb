@@ -14,7 +14,7 @@ RSpec.describe CreatePurchaseOrder, :type => :interactor do
       :number => number, 
       :earliest_request_date => earliest_request_date,
       :latest_request_date => latest_request_date,
-      :user => user)
+      :created_by => user)
   }
 
   context 'valid parameters' do
@@ -34,7 +34,7 @@ RSpec.describe CreatePurchaseOrder, :type => :interactor do
       subject(:purchase_order) { context.purchase_order }
 
       its(:persisted?) { is_expected.to be_truthy }
-      its(:user) { is_expected.to be_present }
+      its(:created_by) { is_expected.to be_present }
       its(:errors) { is_expected.to be_empty }
     end
   end

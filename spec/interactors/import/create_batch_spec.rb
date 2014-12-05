@@ -8,7 +8,7 @@ RSpec.describe Import::CreateBatch, :type => :interactor do
   subject(:context) { 
     Import::CreateBatch.call(
       :upload_file => upload_file,
-      :user => user) 
+      :created_by => user) 
   }
 
   context 'valid parameters' do
@@ -25,6 +25,7 @@ RSpec.describe Import::CreateBatch, :type => :interactor do
 
       its(:persisted?) { is_expected.to be_truthy }
       its(:errors) { is_expected.to be_empty }
+      its(:created_by) { is_expected.to eq(user) }
     end
   end
 
@@ -57,17 +58,6 @@ RSpec.describe Import::CreateBatch, :type => :interactor do
         its(:message) { is_expected.to match(/invalid/i) }
         its(:batch) { is_expected.to be_present }
       end
-      # it 'is failure' do
-      #   expect(context).to be_a_failure
-      # end
-
-      # it 'message contains fail' do
-      #   expect(context.message).to match(/invalid/i)
-      # end
-
-      # it 'has set the product' do
-      #   expect(context.product).to be_present
-      # end
     end
 
     describe Import::Batch do

@@ -3,7 +3,7 @@ class PurchaseOrdersController < ApplicationController
 
   def create
     context = CreatePurchaseOrder.call(
-      purchase_order_params.merge(:user => current_user))
+      purchase_order_params.merge(:created_by => current_user))
 
     if context.success?
       notice_redirect(context.purchase_order, 

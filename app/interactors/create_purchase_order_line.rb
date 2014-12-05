@@ -4,15 +4,22 @@ class CreatePurchaseOrderLine
   include Interactor::Creator
 
   def call
-    # TODO
-
+    if context.purchase_order_line.save
+      context.message = 'Purchase order line successfully created'
+    else
+      context.fail!(:message => 'Purchase order line not created')
+    end
   end
 
   def clazz
     PurchaseOrder::Line
   end
 
-  def create_with_params
-    context.to_h.except(:user)
+  def create
+    context.purchase_order_line.line_number = get_next_line_number
+  end
+
+  def get_next_line_number
+    (PurchaseOrder::Line.maximum('line_number') || 0) + 1
   end
 end

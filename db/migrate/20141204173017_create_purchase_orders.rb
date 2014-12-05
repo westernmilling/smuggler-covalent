@@ -7,7 +7,7 @@ class CreatePurchaseOrders < ActiveRecord::Migration
       t.datetime :earliest_request_date, :null => false
       t.datetime :latest_request_date, :null => false
       t.string :status, :limit => 32, :null => false
-      t.references :user, :null => false
+      t.integer :created_by_user_id, :null => false
 
       t.datetime :deleted_at
       t.timestamps

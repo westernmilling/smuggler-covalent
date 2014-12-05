@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe PurchaseOrder, :type => :model do
   subject { build(:purchase_order) }
 
+  it { is_expected.to belong_to(:created_by) }
   it { is_expected.to belong_to(:ship_to_entity) }
-  it { is_expected.to belong_to(:user) }
   it { is_expected.to validate_presence_of(:date) }
   it { is_expected.to validate_presence_of(:number) }
   it { is_expected.to validate_presence_of(:ship_to_entity) }

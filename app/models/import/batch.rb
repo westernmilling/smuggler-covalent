@@ -1,5 +1,5 @@
 class Import::Batch < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :created_by, :class => User, :foreign_key => :created_by_user_id
 
   has_attached_file :upload, :use_timestamp => false
 

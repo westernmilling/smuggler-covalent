@@ -4,7 +4,9 @@ feature 'user creates new purchase order line' do
   background { sign_in_as(user) }
 
   given(:user) { create(:user, :confirmed) }
-  given(:purchase_order) { create(:purchase_order) }
+  given(:purchase_order) { create(:purchase_order, :created_by => user) }
+  given(:product) { create(:product) }
+  given(:unit_of_measure) { create(:unit_of_measure) }
 
   scenario 'visit new page' do
     visit new_purchase_order_line_path(purchase_order)
@@ -15,13 +17,12 @@ feature 'user creates new purchase order line' do
   scenario 'with valid details' do
     visit new_purchase_order_line_path(purchase_order)
 
-    
-    # find(:xpath, "//input[@id='purchase_order_ship_to_entity_id']").set entity.id
-    # fill_in 'purchase_order_ship_to_entity_display_string', :with => entity.name
-    # fill_in 'purchase_order_date', :with => purchase_order_date
-    # fill_in 'purchase_order_number', :with => purchase_order_number
-    # fill_in 'purchase_order_earliest_request_date', :with => earliested_request_date
-    # fill_in 'purchase_order_latest_request_date', :with => latest_request_date
+    find(:xpath, "//input[@id='purchase_order_line_product_id']").set product.id
+    fill_in 'purchase_order_line_product_display_string', :with => product.name
+    find(:xpath, "//input[@id='purchase_order_line_unit_of_measure_id']").set unit_of_measure.id
+    fill_in 'purchase_order_line_unit_of_measure_display_string', :with => unit_of_measure.name
+    fill_in 'purchase_order_line_quantity', :with => 10
+    fill_in 'purchase_order_line_unit_price', :with => 100
 
     click_button 'Save'
 

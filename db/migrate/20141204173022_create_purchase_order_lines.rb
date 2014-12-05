@@ -7,6 +7,7 @@ class CreatePurchaseOrderLines < ActiveRecord::Migration
       t.integer :quantity, :null => false
       t.decimal :unit_price, :null => false, :scale => 4, :precision => 13
       t.references :unit_of_measure, :null => false
+      t.integer :created_by_user_id, :null => false
       
       t.datetime :deleted_at
       t.timestamps

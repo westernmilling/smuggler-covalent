@@ -12,7 +12,9 @@
     name: 'entity-typeahead',
     displayKey: 'cached_full_name',
     source: entity_source.ttAdapter()
-  }).on('typeahead:autocompleted', function($e, datum) { $('input[id*=entity_id]').val(datum.id); });
+  }).
+  on('typeahead:selected', function($e, datum) { $('input[id*=entity_id]').val(datum.id); }).
+  on('typeahead:autocompleted', function($e, datum) { $('input[id*=entity_id]').val(datum.id); });
 </script>
 <% end %>
 <% if model.errors.any? %>

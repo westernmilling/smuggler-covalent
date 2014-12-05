@@ -8,12 +8,12 @@
    
   product_source.initialize();
    
-  $('.typeahead').typeahead(null, {
+  $('[id*=product_id] .typeahead').typeahead(null, {
     name: 'product-typeahead',
     displayKey: 'name',
     source: product_source.ttAdapter()
   }).
-  on('typeahead:selected', function($e, datum) { $('input[id*=product_id]').val(datum.id); });
+  on('typeahead:selected', function($e, datum) { $('input[id*=product_id]').val(datum.id); }).
   on('typeahead:autocompleted', function($e, datum) { $('input[id*=product_id]').val(datum.id); });
 
   var uom_source = new Bloodhound({
@@ -24,7 +24,7 @@
    
   uom_source.initialize();
    
-  $('.typeahead').typeahead(null, {
+  $('#uom-input .typeahead').typeahead(null, {
     name: 'uom-typeahead',
     displayKey: 'name',
     source: uom_source.ttAdapter()
@@ -41,12 +41,14 @@
   :label => 'Product',
   :controls_html => { class: 'col-sm-4' }, 
   :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find a product' } %>
+
 <%= form.input :unit_of_measure_id, :as => :hidden, :controls_html => { class: 'col-sm-4' } %>
+<div id="uom-input">
 <%= form.input :unit_of_measure_display_string, 
   :label => 'UOM',
   :controls_html => { class: 'col-sm-4' }, 
   :input_html => { :class => 'typeahead', :placeholder => 'Start typing to find a unit of measure' } %>
-
+</div>
 <%= form.input :quantity, 
   :controls_html => { class: 'col-sm-4' }, 
   :input_html => { :type => :number } %>
