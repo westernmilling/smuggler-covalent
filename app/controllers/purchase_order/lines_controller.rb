@@ -11,7 +11,6 @@ class PurchaseOrder::LinesController < ApplicationController
     end
 
     if context.success?
-      puts 'success and redirect'
       notice_redirect(context.purchase_order_line, 
         context.message, 
         [context.purchase_order_line])
