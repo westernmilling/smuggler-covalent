@@ -8,14 +8,16 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
   let(:unit_of_measure_id) { nil }
   let(:unit_price) { nil }
   let(:user) { create(:user) }
-  subject(:context) { 
-    CreatePurchaseOrderLine.call(      
-      :product_id => product_id,
-      :purchase_order_id => purchase_order_id,
-      :quantity => quantity,
-      :unit_of_measure_id => unit_of_measure_id,
-      :unit_price => unit_price,
-      :created_by => user)
+  subject(:context) {
+    with_versioning do 
+      CreatePurchaseOrderLine.call(      
+        :product_id => product_id,
+        :purchase_order_id => purchase_order_id,
+        :quantity => quantity,
+        :unit_of_measure_id => unit_of_measure_id,
+        :unit_price => unit_price,
+        :created_by => user)
+    end
   }
 
   context 'first line with valid parameters' do
@@ -40,8 +42,8 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
       its(:line_number) { is_expected.to eq(1) }
 
       describe 'papertrail' do
-        it 'has no versions yet' do
-          expect(purchase_order_line.versions).to be_empty
+        it 'has 1 version' do
+          expect(purchase_order_line.versions.size).to eq(1)
         end
       end
     end

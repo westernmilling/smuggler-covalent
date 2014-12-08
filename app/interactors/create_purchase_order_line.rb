@@ -11,15 +11,15 @@ class CreatePurchaseOrderLine
     end
   end
 
-  def clazz
-    PurchaseOrder::Line
-  end
-
   def create
     context.purchase_order_line.line_number = get_next_line_number
   end
 
   def get_next_line_number
     (PurchaseOrder::Line.maximum('line_number') || 0) + 1
+  end
+
+  def klazz
+    PurchaseOrder::Line
   end
 end

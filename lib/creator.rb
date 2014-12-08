@@ -7,16 +7,16 @@ module Interactor::Creator
       before :create
       before :validate
 
-      def clazz
-        if @class.nil?
+      def klazz
+        if @klazz.nil?
           class_name = self.class.name[6..-1]
-          @clazz = Object.const_get(class_name)
+          @klazz = Object.const_get(class_name)
         end
-        @clazz
+        @klazz
       end
 
       def context_key
-        clazz.name.gsub(/(::)/, '').underscore.to_sym
+        klazz.name.gsub(/(::)/, '').underscore.to_sym
       end
 
       def create_with_params
@@ -26,7 +26,7 @@ module Interactor::Creator
       def create ; end
       
       def initialize_model_instance
-        self.context[context_key] = clazz.new(create_with_params)
+        self.context[context_key] = klazz.new(create_with_params)
       end
 
       def model
