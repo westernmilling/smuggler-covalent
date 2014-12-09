@@ -35,6 +35,8 @@ class EntitiesController < ApplicationController
         :region_code, 
         :country, 
         :roles)
+  rescue ActionController::ParameterMissing
+    {}
   end
 
 end

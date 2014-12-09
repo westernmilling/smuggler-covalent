@@ -33,8 +33,4 @@ feature 'user creates new import batch' do
   end
 
   # scenario 'user is not permitted' do
-
-  def sign_in
-    login_as(user, :scope => :user)
-  end
 end

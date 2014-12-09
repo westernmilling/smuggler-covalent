@@ -7,10 +7,9 @@ class Import::BatchesController < ApplicationController
     if @import_batch_input.valid?
       context = Import::CreateBatch.call(
         :upload_file => @import_batch_input.upload_file,
-        :user => current_user)
+        :created_by => current_user)
 
       if context.success?
-        # notice_redirect(import_batch, 'Batch successfully created', [import_batch])
         notice_redirect(context.batch, context.message, [context.batch])
       else
         render :new

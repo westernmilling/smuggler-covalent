@@ -15,6 +15,12 @@ Rails.application.routes.draw do
   resources :price_translations
   resources :products
   resources :product_translations
+  resources :purchase_orders do
+    resources :lines, :controller => 'purchase_order/lines', :only => [:create, :new]
+  end
+  resources :purchase_order_lines, 
+    :controller => 'purchase_order/lines', 
+    :only => [:edit, :destroy, :show, :update]
   resources :quantity_translations
   resources :unit_of_measures
   resources :unit_of_measure_translations

@@ -3,31 +3,46 @@ module Interactor::Creator
     base.class_eval do
       include Interactor
 
-      before :create_model_instance
+      before :initialize_model_instance
       before :create
       before :validate
 
-      def clazz
-        if @class.nil?
+      def klazz
+        if @klazz.nil?
           class_name = self.class.name[6..-1]
-          @clazz = Object.const_get(class_name)
+          @klazz = Object.const_get(class_name)
         end
-        @clazz
+        @klazz
       end
+
+      def context_key
+        klazz.name.gsub(/(::)/, '').underscore.to_sym
+      end
+
+      def create_with_params
+        context.to_h
+      end
+
+      def create ; end
       
-      def create_model_instance
-        self.context[clazz.name.underscore.to_sym] = clazz.new(context.to_h)
+      def initialize_model_instance
+        self.context[context_key] = klazz.new(create_with_params)
       end
 
       def model
-        self.context[clazz.name.underscore.to_sym]
+        self.context[context_key]
       end
 
       # def model=(value)
       #   self.context[clazz.name.underscore.to_sym] = value
       # end
 
-      def validate ; end
+      # Prevalidate the new model before attempting to persist.
+      def validate 
+        unless model.valid?
+          context.fail!(:message => 'Invalid details')
+        end
+      end
 
     end
   end

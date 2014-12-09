@@ -31,6 +31,8 @@ class QuantityTranslationsController < ApplicationController
       permit(
         :sender_value,
         :expression)
+  rescue ActionController::ParameterMissing
+    {}  
   end
 
 end
