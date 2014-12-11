@@ -2,7 +2,7 @@
   <thead>
   <tr>
     <th>File</th>
-    <th>User</th>
+    <!-- <th>User</th> -->
     <th>Status</th>
     <th></th>
   </tr>
@@ -11,7 +11,7 @@
   <% if @import_batches.each do |import_batch| %>
     <tr>
       <td><%= import_batch.upload.original_filename %></td>
-      <td><%= import_batch.user.email %>
+      <!-- <td><%#= import_batch.user.email %> -->
       <td><%= import_batch.status %></td>
       <td nowrap>              
         <%= link_to [import_batch, :return_url => return_url(request.original_url)],

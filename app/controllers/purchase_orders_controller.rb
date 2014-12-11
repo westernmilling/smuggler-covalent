@@ -1,5 +1,7 @@
 class PurchaseOrdersController < ApplicationController
-  respond_to(:html)
+  respond_to(:csv, :html)
+
+  before_filter :set_purchase_order, :only => [:show]
 
   def create
     context = CreatePurchaseOrder.call(
@@ -15,10 +17,24 @@ class PurchaseOrdersController < ApplicationController
   end
 
   def index
+    @purchase_orders = PurchaseOrder.all.decorate
   end
 
   def new
     @purchase_order = PurchaseOrder.new.decorate
+  end
+
+  def show
+    respond_to do |format|
+      format.html
+      format.csv {
+        send_data(
+          PurchaseOrder::CsvBuilder.new.add(@purchase_order).csv_lines.join("\n"),
+          :type => 'text/csv; charset=utf-8; header=present',
+          :filename => 'purchase_order.csv',
+          :disposition => 'attachment')
+      }
+    end
   end
 
   protected
@@ -34,5 +50,9 @@ class PurchaseOrdersController < ApplicationController
         :latest_request_date)
   rescue ActionController::ParameterMissing
     {}
+  end
+
+  def set_purchase_order
+    @purchase_order = PurchaseOrder.find(params[:id])
   end
 end

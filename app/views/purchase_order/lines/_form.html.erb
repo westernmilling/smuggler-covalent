@@ -8,7 +8,7 @@
    
   product_source.initialize();
    
-  $('[id*=product_id] .typeahead').typeahead(null, {
+  $('[id*=product_display_string].typeahead').typeahead(null, {
     name: 'product-typeahead',
     displayKey: 'name',
     source: product_source.ttAdapter()
