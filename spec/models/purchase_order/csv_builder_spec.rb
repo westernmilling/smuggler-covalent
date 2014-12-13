@@ -111,13 +111,12 @@ RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
       builder.add(create_po)
       builder.add(create_po)
     }
-    subject { builder.purchase_orders }
 
     describe '.purchase_orders' do
+      subject { builder.purchase_orders }
+
       its(:length) { is_expected.to eq(2) }
     end
   end
 
-
-  
 end
