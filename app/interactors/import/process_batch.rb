@@ -16,10 +16,7 @@ module Import
     # Assignment Branch Condition size for call is too high. [49.16/15]
     # Method has too many lines. [31/10]
     def call
-      context.batch.lines
-        .group_by(&:purchase_order_number)
-        .each do |_k, lines|
-        #
+      context.batch.lines.group_by(&:purchase_order_number).each do |_k, lines|
         purchase_order = create_purchase_order(lines.first)
 
         lines.each do |line|
