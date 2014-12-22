@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141220185633) do
+ActiveRecord::Schema.define(version: 20141205152551) do
 
   create_table "entities", force: true do |t|
     t.string   "cached_full_name",            null: false
@@ -43,35 +43,12 @@ ActiveRecord::Schema.define(version: 20141220185633) do
     t.datetime "updated_at"
   end
 
-  create_table "import_batch_line_field_values", force: true do |t|
-    t.integer  "import_batch_id",      null: false
-    t.integer  "import_batch_line_id", null: false
-    t.string   "name",                 null: false
-    t.string   "value"
-    t.datetime "deleted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "import_batch_lines", force: true do |t|
-    t.integer  "import_batch_id",                     null: false
-    t.string   "import_data",            limit: 4000, null: false
-    t.string   "purchase_order_number",  limit: 10,   null: false
-    t.string   "sender",                 limit: 12,   null: false
-    t.string   "status",                 limit: 32,   null: false
-    t.integer  "purchase_order_id"
-    t.integer  "purchase_order_line_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "import_batches", force: true do |t|
-    t.string   "status",              null: false
     t.string   "upload_file_name"
     t.string   "upload_content_type"
     t.integer  "upload_file_size"
     t.datetime "upload_updated_at"
+    t.string   "status",              null: false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -101,7 +78,6 @@ ActiveRecord::Schema.define(version: 20141220185633) do
     t.string   "reference",               null: false
     t.string   "source",                  null: false
     t.string   "uuid",         limit: 36, null: false
-    t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -113,7 +89,6 @@ ActiveRecord::Schema.define(version: 20141220185633) do
     t.integer  "quantity",                                    null: false
     t.decimal  "unit_price",         precision: 13, scale: 4, null: false
     t.integer  "unit_of_measure_id",                          null: false
-    t.integer  "created_by_user_id",                          null: false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -126,7 +101,6 @@ ActiveRecord::Schema.define(version: 20141220185633) do
     t.datetime "earliest_request_date",            null: false
     t.datetime "latest_request_date",              null: false
     t.string   "status",                limit: 32, null: false
-    t.integer  "created_by_user_id",               null: false
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
