@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :purchase_order_line, :class => PurchaseOrder::Line do    
-    association :created_by, factory: :user
     purchase_order
     product
     quantity 10

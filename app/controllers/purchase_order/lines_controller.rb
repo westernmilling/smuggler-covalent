@@ -7,12 +7,13 @@ class PurchaseOrder::LinesController < ApplicationController
     context = nil
     PurchaseOrder::Line.transaction do
       context = CreatePurchaseOrderLine.call(
-        line_params.merge(:created_by => current_user))
+        line_params.merge(:user => current_user))
     end
 
     if context.success?
-      notice_redirect(context.purchase_order_line, 
-        context.message, 
+      notice_redirect(
+        context.purchase_order_line,
+        context.message,
         [context.purchase_order_line])
     else
       @purchase_order_line = context.purchase_order_line.decorate
@@ -37,9 +38,9 @@ class PurchaseOrder::LinesController < ApplicationController
     params.
       require(:purchase_order_line).
       permit(
-        :purchase_order_id, 
+        :purchase_order_id,
         :product_id,
-        :quantity, 
+        :quantity,
         :unit_of_measure_id,
         :unit_price)
   rescue ActionController::ParameterMissing

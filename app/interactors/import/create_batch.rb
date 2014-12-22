@@ -1,40 +1,41 @@
-class Import::CreateBatch
-  include Interactor
+require 'creator'
 
-  before :create_batch
-  before :validate
+class Import::CreateBatch
+  include Interactor::Creator
 
   def call
-    # do save in before block
+    model.whodunnit(context.user) { model.save! }
+    
+    # TODO: Queue processing
 
-    # queue file processing
-
-    if context.batch.save!
-      context.message = 'Batch successfully created'
-    else
-      fail!(:message => 'Batch not created') 
-    end
+    context.message = 'Batch successfully created'
+    # else
+    #   fail!(:message => 'Batch not created') 
+    # end
   end
 
-  def create_batch
-    context.batch = Import::Batch.new(context.to_h.except(:upload_file_path, :upload_file))
-    context.batch.status = :new
+  def after_build
+    model.status = :new
     # TODO: Refactor this
     if context.upload_file
       if context.upload_file.is_a?(String)
         File.open(context.upload_file, 'r') do |file|
-          context.batch.upload = file
+          model.upload = file
         end
       else
-        context.batch.upload = context.upload_file
+        model.upload = context.upload_file
       end
     end
   end
 
-  def validate
-    unless context.batch.valid?
-      context.fail!(:message => 'Invalid batch details')
-    end
+  def build_params
+    base_params.except(:upload_file, :user)
+  end
+
+  def context_key ; :batch ; end
+
+  def klazz
+    Import::Batch
   end
 
 end

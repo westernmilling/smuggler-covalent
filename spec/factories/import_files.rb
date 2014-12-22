@@ -1,69 +1,4 @@
 require 'csv'
-
-def create_file_data
-  header = [
-    'Sender',
-    'Receiver', 
-    'PO Number', 
-    'PO Date',
-    'Ship-To Location',
-    'Line Nbr',
-    'Quantity',
-    'Unit Price',
-    '\"UOM  Basis of UOM\"',
-    'Buyer Item Nbr',
-    'Delivery Date Requested',
-    'Last Delivery Date Requested'
-  ]
-
-  sender = Faker::Number.number(12)
-  receiver = Faker::Number.number(12)
-  po_number = Faker::Number.number(10)
-  po_date = Time.now.to_date
-  ship_to_location = Faker::Number.number(11)
-  quantity = 10
-  unit_price = 100
-  item_number = Faker::Number.number(9)
-
-  lines = []
-  lines << header
-
-  (1..3).each do |i|
-    lines << [
-      sender,
-      receiver,
-      po_number,
-      po_date,
-      ship_to_location,
-      i,
-      quantity,
-      unit_price,
-      'EA',
-      item_number,
-      Time.now.to_date,
-      Time.now.to_date# + 1.month
-    ]
-  end
-
-  lines
-
-  # lines += [
-  #     sender,
-  #     receiver,
-  #     po_number,
-  #     po_date,
-  #     ship_to_location,
-  #     i,
-  #     quantity,
-  #     unit_price,
-  #     'EA',
-  #     item_number,
-  #     Time.now.to_date,
-  #     Time.now.to_date# + 1.month
-  #   ] * 3
-
-
-
   # header = [
   #   'Sender',
   #   'Receiver', 
@@ -146,28 +81,12 @@ def create_file_data
   #   'Sub-Line Item',
   #   'Item Info'
   # ]
-end 
-
-
 FactoryGirl.define do
   factory :import_file, :class => Tempfile do  
     to_create {}  
 
     initialize_with do
-      file = Tempfile.new(['purchase_orders', '.csv'])
-      lines = create_file_data
-
-      # puts "Lines: #{lines.to_yaml}"
-
-      CSV.open(file, "w") do |csv|        
-        lines.each do |line|
-          csv << line.map { |x| x.to_s }
-        end
-      end
-
-      file
+      create_import_file([{:lines => [{}]}])
     end
-
-
   end
 end

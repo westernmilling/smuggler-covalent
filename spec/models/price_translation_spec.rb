@@ -1,23 +1,39 @@
 require 'rails_helper'
 
 RSpec.describe PriceTranslation, :type => :model do
-  let(:expression) { nil }
-  subject(:price_translation) { build(:price_translation, :expression => expression) }
+  describe 'validations' do
+    let(:expression) { nil }
+    subject(:price_translation) do
+      build(:price_translation, :expression => expression)
+    end
 
-  it { should validate_presence_of(:sender_value) }
-  it { should validate_presence_of(:expression) }
+    it { should validate_presence_of(:sender_value) }
+    it { should validate_presence_of(:expression) }
+  end
 
-  describe '.translate' do    
-    subject(:translate) { price_translation.translate(hash) }
-    let(:hash) {  
-      { :unit_price => 2, :other_value => 5 }
-    }
+  describe '#translate' do
+    before do
+      create(
+        :price_translation,
+        :sender_value => sender_value,
+        :expression => expression)
+    end
+    let(:expression) { nil }
+    let(:hash) do
+      {
+        :sender => sender_value,
+        :unit_price => '2',
+        :quantity => '5'
+      }
+    end
+    let(:sender_value) { Faker::Number.number(12) }
+    subject(:translate) { PriceTranslation.translate(hash) }
 
     context 'valid expression' do
-      let(:expression) { 'unit_price * other_value' }
+      let(:expression) { 'unit_price * quantity' }
 
       it 'translates the value correctly' do
-        expect(translate.translated_value).to eq(10)
+        expect(translate).to eq(10)
       end
     end
 
@@ -29,5 +45,4 @@ RSpec.describe PriceTranslation, :type => :model do
       end
     end
   end
-
 end

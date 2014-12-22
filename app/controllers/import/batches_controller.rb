@@ -7,7 +7,7 @@ class Import::BatchesController < ApplicationController
     if @import_batch_input.valid?
       context = Import::CreateBatch.call(
         :upload_file => @import_batch_input.upload_file,
-        :created_by => current_user)
+        :user => current_user)
 
       if context.success?
         notice_redirect(context.batch, context.message, [context.batch])
@@ -31,10 +31,11 @@ class Import::BatchesController < ApplicationController
     @import_batch = Import::Batch.find(params[:id])
   end
 
+  protected
+
   def batch_params
     params.require(:import_batch_input).permit(:upload_file)
-  rescue ActionController::ParameterMissing
-    {}
+  rescue ActionController::ParameterMissing ; {}
   end
 
 end

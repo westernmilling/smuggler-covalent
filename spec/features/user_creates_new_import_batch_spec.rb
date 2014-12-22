@@ -13,8 +13,6 @@ feature 'user creates new import batch' do
   end
 
   scenario 'save with valid details' do
-    # sign_in
-
     visit new_import_batch_path
 
     attach_file('import_batch_input_upload_file', file.path)

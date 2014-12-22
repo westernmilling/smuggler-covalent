@@ -3,9 +3,13 @@ module Interactor::Creator
     base.class_eval do
       include Interactor
 
-      before :initialize_model_instance
-      before :create
+      # before :initialize_model_instance
+      before :build
+      # before :create
+      before :after_build
       before :validate
+
+      def after_build ; end
 
       def klazz
         if @klazz.nil?
@@ -24,13 +28,26 @@ module Interactor::Creator
       end
 
       def create ; end
-      
-      def initialize_model_instance
-        self.context[context_key] = klazz.new(create_with_params)
+
+      def base_params
+        context.to_h.except(context_key)
       end
 
+      def build
+        self.context[context_key] = klazz.new(build_params)
+      end
+
+      def build_params
+        base_params
+      end
+      
+      # def initialize_model_instance
+      #   build
+      #   # self.context[context_key] = klazz.new(build_params)
+      # end
+
       def model
-        self.context[context_key]
+        context[context_key]
       end
 
       # def model=(value)
