@@ -11,7 +11,7 @@
     <tr>
       <td><%= translation.sender_value %></td>
       <td><%= translation.expression %></td>
-      <td nowrap>              
+      <td nowrap>
         <%= link_to [translation, :return_url => return_url(request.original_url)],
                     class: 'btn btn-default btn-icon btn-sm hidden-print' do %>
             <span class="glyphicon glyphicon-eye-open"></span>
@@ -20,7 +20,7 @@
     </tr>
   <% end.empty? %>
     <tr>
-      <td colspan="4">No price translations found</td><td></td>
+      <td colspan="4">No quantity translations found</td><td></td>
     </tr>
   <% end %>
   </tbody>

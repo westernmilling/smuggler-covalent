@@ -16,5 +16,6 @@ RSpec.describe Import::Batch::Line::FieldValue, :type => :model do
     it { is_expected.to validate_presence_of(:batch) }
     it { is_expected.to validate_presence_of(:line) }
     it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.not_to validate_presence_of(:value) }
   end
 end

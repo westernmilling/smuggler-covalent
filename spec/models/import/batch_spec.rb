@@ -5,6 +5,7 @@ RSpec.describe Import::Batch, :type => :model do
 
   describe 'associations' do
     it { is_expected.to have_many(:lines) }
+    it { is_expected.to have_many(:purchase_orders) }
   end
 
   describe 'paranoid' do

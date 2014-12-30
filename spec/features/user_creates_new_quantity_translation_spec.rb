@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'user creates new quantity translation' do
+feature 'User creates new quantity translation' do
   background { sign_in_as(user) }
 
   given(:user) { create(:user, :confirmed) }
@@ -8,7 +8,7 @@ feature 'user creates new quantity translation' do
   scenario 'visit new page' do
     visit new_quantity_translation_path
 
-    expect(page).to have_content(/new price translation/i)
+    expect(page).to have_content(/new quantity translation/i)
   end
 
   # TODO: Add a javascript driver so we can test the Entity typeahead

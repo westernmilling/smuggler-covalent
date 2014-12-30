@@ -1,0 +1,66 @@
+<%= @import_batch.status %>
+
+<%= @import_batch.upload_file_name %>
+
+<!-- Only show the process link if the batch status is new or fail -->
+<%= link_to 'Process', [:process, @import_batch], :method => :put %>
+
+<table class="">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Type</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @import_batch.remarks.each do |remark| %>
+    <tr>
+      <td><%= remark.remark_category %></td>
+      <td><%= remark.remark_type %></td>
+      <td><%= remark.remark_message %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<table class="">
+  <thead>
+    <tr>
+      <th>Sender</th>
+      <th>PO Number</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @import_batch.lines.each do |line| %>
+    <tr>
+      <td><%= line.sender %></td>
+      <td><%= line.purchase_order_number %></td>
+      <td><%= line.status %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<table class="">
+  <thead>
+    <tr>
+      <th colspan="2">Purchase Order</th>
+      <th colspan="2">Ship To</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @import_batch.purchase_orders.each do |purchase_order| %>
+    <tr>
+      <td><%= purchase_order.number %></td>
+      <td><%= purchase_order.date %></td>
+      <td><%= purchase_order.ship_to_entity.reference %></td>
+      <td><%= purchase_order.ship_to_entity.name %></td>
+      <td><%= purchase_order.status %></td>
+      <td><%= link_to 'View', [purchase_order] %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

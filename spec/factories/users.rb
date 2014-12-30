@@ -11,10 +11,7 @@ FactoryGirl.define do
       if User.where(:email => email).first
         User.where(:email => email).first
       else
-        User.create({
-                        :email => email,
-                        :password => password
-                    })
+        User.create(:email => email, :password => password)
       end
     end
   end

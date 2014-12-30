@@ -1,9 +1,10 @@
 class Import::BatchesController < ApplicationController
   respond_to(:html)
 
-  def create
-    @import_batch_input = Import::BatchInput.new(batch_params)
+  before_filter :build_batch, :only => [:create, :new]
+  before_filter :load_batch, :only => [:destroy, :show]
 
+  def create
     if @import_batch_input.valid?
       context = Import::CreateBatch.call(
         :upload_file => @import_batch_input.upload_file,
@@ -19,23 +20,35 @@ class Import::BatchesController < ApplicationController
     end
   end
 
+  def destroy
+    if @import_batch.destroy
+      notice_redirect(@import_batch, 'Batch deleted', [:import_batches])
+    else
+      alert_redirect(@import_batch, 'Failed to delete batch', [:import_batches])
+    end
+  end
+
   def index
     @import_batches = Import::Batch.all
   end
 
-  def new
-    @import_batch_input = Import::BatchInput.new
-  end
+  def new ; end
 
-  def show
-    @import_batch = Import::Batch.find(params[:id])
-  end
+  def show ; end
 
   protected
 
   def batch_params
     params.require(:import_batch_input).permit(:upload_file)
   rescue ActionController::ParameterMissing ; {}
+  end
+
+  def build_batch
+    @import_batch_input = Import::BatchInput.new(batch_params)
+  end
+
+  def load_batch
+    @import_batch = Import::Batch.find(params[:id])
   end
 
 end

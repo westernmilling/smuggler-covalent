@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :product_translation do    
+  factory :product_translation do
     product { build(:product) }
     sender_value { Faker::Number.number(12) }
     source_field 'buyer_item_nbr'

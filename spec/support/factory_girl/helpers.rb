@@ -28,7 +28,7 @@ module Smuggler
           'Line Nbr',
           'Quantity',
           'Unit Price',
-          '\"UOM  Basis of UOM\"',
+          'UOM  Basis of UOM',
           'Buyer Item Nbr',
           'dtl_user_defined_field3',
           'Delivery Date Requested',

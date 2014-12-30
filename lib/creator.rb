@@ -1,5 +1,5 @@
 module Interactor::Creator
-  def self.included(base)    
+  def self.included(base)
     base.class_eval do
       include Interactor
 

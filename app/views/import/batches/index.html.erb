@@ -15,8 +15,15 @@
       <td><%= import_batch.status %></td>
       <td nowrap>              
         <%= link_to [import_batch, :return_url => return_url(request.original_url)],
-                    class: 'btn btn-default btn-icon btn-sm hidden-print' do %>
+                    :class => 'btn btn-default btn-icon btn-sm hidden-print' do %>
             <span class="glyphicon glyphicon-eye-open"></span>
+        <% end %>
+        <%= link_to(
+              [import_batch, :return_url => return_url(request.original_url)],
+              :class => 'btn btn-default btn-icon btn-sm hidden-print',
+              :data => { :confirm => 'Are you sure?' },
+              :method => :delete) do %>
+            <span class="glyphicon glyphicon-trash"></span>
         <% end %>
       </td>
     </tr>

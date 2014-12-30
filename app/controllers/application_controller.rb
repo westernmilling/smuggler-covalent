@@ -5,10 +5,17 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  def notice_redirect(object, message, location)
+  def redirect_with_alert(object, message, location)
+    flash[:alert] = message
+
+    respond_with object, :location => location
+  end
+
+  def redirect_with_notice(object, message, location)
     flash[:notice] = message
 
     respond_with object, :location => location
   end
+  alias :notice_redirect :redirect_with_notice
 
 end

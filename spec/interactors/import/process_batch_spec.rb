@@ -4,11 +4,11 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
   before do
     create(
       :price_translation,
-      :sender_value => entity_translation.sender_value,
+      :sender_value => sender_value,
       :expression => 'unit_price * quantity')
     create(
       :quantity_translation,
-      :sender_value => entity_translation.sender_value,
+      :sender_value => sender_value,
       :expression => 'quantity / dtl_user_defined_field3')
   end
   let(:batch) do
@@ -20,52 +20,43 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
   let(:batch_id) { batch.id }
   let(:batch_status) { :new }
   let(:context) { interactor }
-  let(:entity) { create(:entity) }
   let(:entity_translation) do
     create(
       :entity_translation,
-      :entity => entity)
+      :entity => create(:entity),
+      :sender_value => sender_value,
+      :source_value => ship_to_location)
   end
   let(:import_data) { [] }
   let(:import_lines) { create_import_file_lines(import_data) }
   let(:import_file) { create_import_file(import_lines) }
-  let(:product_1) { create(:product) }
-  let(:product_translation_1) do
-    create(
-      :product_translation,
-      :product => product_1,
-      :sender_value => entity_translation.sender_value)
-  end
-  let(:product_2) { create(:product) }
-  let(:product_translation_2) do
-    create(
-      :product_translation,
-      :product => product_2,
-      :sender_value => entity_translation.sender_value)
-  end
-  let(:price_translation) do
-    create(
-      :price_translation,
-      :sender_value => entity_translation.sender_value,
-      :expression => 'unit_price * quantity')
-  end
-  let(:quantity_translation) do
-    create(
-      :quantity_translation,
-      :sender_value => entity_translation.sender_value,
-      :expression => 'quantity / dtl_user_defined_field3')
-  end
+  let(:ship_to_location) { Faker::Number.number(11) }
   let(:unit_of_measure) { create(:unit_of_measure) }
-  let(:unit_of_measure_translation) do
-    create(
-      :unit_of_measure_translation,
-      :unit_of_measure => unit_of_measure,
-      :sender_value => entity_translation.sender_value)
-  end
   subject(:interactor) { Import::ProcessBatch.call(:batch_id => batch_id) }
 
   describe '#call' do
-    # New batch, OK to process
+    let(:product_translation_1) do
+      create(
+        :product_translation,
+        :product => create(:product),
+        :sender_value => sender_value,
+        :source_value => Faker::Number.number(9))
+    end
+    let(:product_translation_2) do
+      create(
+        :product_translation,
+        :product => create(:product),
+        :sender_value => sender_value,
+        :source_value => Faker::Number.number(9))
+    end
+    let(:sender_value) { Faker::Number.number(12) }
+    let(:unit_of_measure_translation) do
+      create(
+        :unit_of_measure_translation,
+        :sender_value => sender_value,
+        :unit_of_measure => unit_of_measure)
+    end
+
     context 'when batch is new' do
       let(:batch_status) { :new }
       let(:import_data) do
@@ -83,7 +74,7 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
               }
             ],
             :sender => entity_translation.sender_value,
-            :ship_to_location => entity_translation.source_value
+            :ship_to_location => ship_to_location
           }
         ]
       end
@@ -126,7 +117,6 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
       end
     end
 
-    # Failed batch, OK to process
     context 'when batch is failed' do
       let(:batch_status) { :failed }
 
@@ -157,8 +147,60 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
       end
     end
 
-    # Fail the batch!
-    context 'when translation information is missing' do
+    context 'when a failing batch is processed a second time' do
+      before do
+        Import::ProcessBatch.call(:batch_id => batch_id)
+      end
+      let(:batch_status) { :new }
+      let(:import_data) do
+        [
+          {
+            :number => Faker::Number.number(10),
+            :lines => [
+              {
+                :buyer_item_number => product_translation_1.source_value,
+                :uom_basis_of_uom => 'EA'
+              }
+            ],
+            :sender => Faker::Number.number(12),
+            :ship_to_location => ship_to_location
+          }
+        ]
+      end
+
+      describe 'context' do
+        subject { context }
+
+        its(:failure?) { is_expected.to be_truthy }
+        its(:message) { is_expected.to match(/batch proccess failed/i) }
+        its(:batch) { is_expected.to be_present }
+      end
+
+      describe Import::Batch do
+        subject { context.batch }
+
+        its(:status) { is_expected.to eq(:failed) }
+      end
+
+      describe 'batch lines' do
+        subject { context.batch.lines }
+
+        its(:any?) { is_expected.to be_truthy }
+        its(:size) { is_expected.to eq(1) }
+
+        describe 'first' do
+          subject { context.batch.lines[0] }
+
+          its(:present?) { is_expected.to be_truthy }
+          its(:status) { is_expected.to eq(:failed) }
+        end
+      end
+
+      describe 'purchase orders' do
+        subject(:purchase_orders) { context.purchase_orders }
+
+        its(:any?) { is_expected.to be_falsey }
+      end
     end
 
     context 'when batch has a single purchase order' do
@@ -177,7 +219,7 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
               }
             ],
             :sender => entity_translation.sender_value,
-            :ship_to_location => entity_translation.source_value
+            :ship_to_location => ship_to_location
           }
         ]
       end
@@ -201,13 +243,13 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
       describe 'first purchase order line' do
         subject(:line) { context.purchase_orders[0].lines[0] }
 
-        its(:product) { is_expected.to eq(product_1) }
+        its(:product) { is_expected.to eq(product_translation_1.product) }
       end
 
       describe 'second purchase order line' do
         subject(:line) { context.purchase_orders[0].lines[1] }
 
-        its(:product) { is_expected.to eq(product_2) }
+        its(:product) { is_expected.to eq(product_translation_2.product) }
       end
     end
 
@@ -223,7 +265,7 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
               }
             ],
             :sender => entity_translation.sender_value,
-            :ship_to_location => entity_translation.source_value
+            :ship_to_location => ship_to_location
           },
           {
             :number => Faker::Number.number(10),
@@ -233,7 +275,7 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
                 :uom_basis_of_uom => unit_of_measure_translation.source_value
               }],
             :sender => entity_translation.sender_value,
-            :ship_to_location => entity_translation.source_value
+            :ship_to_location => ship_to_location
           }
         ]
       end
@@ -246,8 +288,123 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
       end
     end
 
-    context 'when batch has missing product translation' do
-      # TODO: Write tests to expect a status of failed with some remarks
+    context 'when translation information is missing' do
+      let(:batch_status) { :new }
+      let(:import_data) do
+        [
+          {
+            :number => Faker::Number.number(10),
+            :lines => [
+              {
+                :buyer_item_number => product_translation_1.source_value,
+                :uom_basis_of_uom => 'EA'
+              }
+            ],
+            :sender => Faker::Number.number(12),
+            :ship_to_location => ship_to_location
+          }
+        ]
+      end
+
+      describe 'context' do
+        subject { context }
+
+        its(:failure?) { is_expected.to be_truthy }
+        its(:message) { is_expected.to match(/batch proccess failed/i) }
+        its(:batch) { is_expected.to be_present }
+      end
+
+      describe Import::Batch do
+        subject { context.batch }
+
+        its(:status) { is_expected.to eq(:failed) }
+      end
+
+      describe 'batch lines' do
+        subject { context.batch.lines }
+
+        its(:any?) { is_expected.to be_truthy }
+        its(:size) { is_expected.to eq(1) }
+
+        describe 'first' do
+          subject { context.batch.lines[0] }
+
+          its(:present?) { is_expected.to be_truthy }
+          its(:status) { is_expected.to eq(:failed) }
+        end
+      end
+
+      describe 'batch remarks' do
+        subject(:remarks) { context.batch.remarks }
+
+        its(:any?) { is_expected.to be_truthy }
+
+        describe 'entity translation' do
+          subject(:first) do
+            remarks.find_by(:remark_category => 'EntityTranslation')
+          end
+
+          its(:present?) { is_expected.to be_truthy }
+          its(:remark_message) do
+            is_expected.to eq('Entity failed translation')
+          end
+          its(:remark_type) { is_expected.to eq(:error) }
+        end
+
+        describe 'price translation' do
+          subject(:first) do
+            remarks.find_by(:remark_category => 'PriceTranslation')
+          end
+
+          its(:present?) { is_expected.to be_truthy }
+          its(:remark_message) do
+            is_expected.to eq('Price failed translation')
+          end
+          its(:remark_type) { is_expected.to eq(:error) }
+        end
+
+        describe 'product translation' do
+          subject(:first) do
+            remarks.find_by(:remark_category => 'ProductTranslation')
+          end
+
+          its(:present?) { is_expected.to be_truthy }
+          its(:remark_message) do
+            is_expected.to eq('Product failed translation')
+          end
+          its(:remark_type) { is_expected.to eq(:error) }
+        end
+
+        describe 'quantity translation' do
+          subject(:first) do
+            remarks.find_by(:remark_category => 'QuantityTranslation')
+          end
+
+          its(:present?) { is_expected.to be_truthy }
+          its(:remark_message) do
+            is_expected.to eq('Quantity failed translation')
+          end
+          its(:remark_type) { is_expected.to eq(:error) }
+        end
+
+        describe 'unit of measure translation' do
+          subject(:first) do
+            remarks.find_by(:remark_category => 'UnitOfMeasureTranslation')
+          end
+
+          its(:present?) { is_expected.to be_truthy }
+          its(:remark_message) do
+            is_expected.to eq('Unit of measure failed translation')
+          end
+          its(:remark_type) { is_expected.to eq(:error) }
+        end
+
+        describe 'purchase orders' do
+          subject(:purchase_orders) { context.purchase_orders }
+
+          its(:any?) { is_expected.to be_falsey }
+        end
+      end
     end
   end
 end

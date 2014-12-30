@@ -18,7 +18,6 @@ RSpec.describe Import::Batch::Line, :type => :model do
     subject { build(:import_batch_line) }
 
     it { is_expected.to validate_presence_of(:batch) }
-    it { is_expected.to validate_presence_of(:import_data) }
     it { is_expected.to validate_presence_of(:purchase_order_number) }
     it { is_expected.to validate_presence_of(:sender) }
     it { is_expected.to validate_presence_of(:status) }

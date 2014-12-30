@@ -1,5 +1,8 @@
-[![Code Climate](https://codeclimate.com/github/westernmilling/smuggler-covalent/badges/gpa.svg)](https://codeclimate.com/github/westernmilling/smuggler-covalent)
 [![Build Status](https://travis-ci.org/westernmilling/smuggler-covalent.svg)](https://travis-ci.org/westernmilling/smuggler-covalent)
+[![Code Climate](https://codeclimate.com/github/westernmilling/smuggler-covalent/badges/gpa.svg)](https://codeclimate.com/github/westernmilling/smuggler-covalent)
+[![Test Coverage](https://codeclimate.com/github/westernmilling/smuggler-covalent/badges/coverage.svg)](https://codeclimate.com/github/westernmilling/smuggler-covalent)
+[![Coverage Status](https://coveralls.io/repos/westernmilling/smuggler-covalent/badge.png)](https://coveralls.io/r/westernmilling/smuggler-covalent)
+[![Dependency Status](https://img.shields.io/gemnasium/westernmilling/smuggler-covalent.svg)](https://gemnasium.com/westernmilling/smuggler-covalent)
 
 smuggler-covalent
 =================

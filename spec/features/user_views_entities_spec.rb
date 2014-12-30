@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'user views entities' do
+feature 'User views entities' do
   background { sign_in_as(user) }
 
   given(:user) { create(:user, :confirmed) }
