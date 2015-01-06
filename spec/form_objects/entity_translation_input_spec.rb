@@ -11,17 +11,17 @@ RSpec.describe EntityTranslationInput, :type => :model do
   its(:persisted?) { should be_falsey }
 
   describe '.save' do
-    let(:entity) { create(:entity) }  
-    let(:sender_value) { Faker::Number.number(12) }  
+    let(:entity) { create(:entity) }
+    let(:sender_value) { Faker::Number.number(12) }
     let(:source_field) { 'Ship-To Location' }
     let(:source_value) { Faker::Number.number(11) }
-    let(:input) { 
+    let(:input) do
       EntityTranslationInput.new(
-        :entity_id => entity.id, 
-        :sender_value => sender_value, 
-        :source_field => source_field, 
+        :entity_id => entity.id,
+        :sender_value => sender_value,
+        :source_field => source_field,
         :source_value => source_value)
-    }
+    end
 
     context 'valid input' do
       it 'returns true' do
@@ -52,11 +52,10 @@ RSpec.describe EntityTranslationInput, :type => :model do
 
         expect(input.entity_translation.persisted?).to be_truthy
       end
-      
     end
 
     context 'invalid input' do
-      let(:sender_value) { nil }  
+      let(:sender_value) { nil }
 
       it 'returns false' do
         expect(input.save).to be_falsey
@@ -65,7 +64,7 @@ RSpec.describe EntityTranslationInput, :type => :model do
         input.save
 
         expect(input.entity_translation).not_to be_present
-      end      
+      end
     end
   end
 end

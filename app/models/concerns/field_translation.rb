@@ -12,10 +12,13 @@ module FieldTranslation
     class << self
       def translate(hash)
         by_sender(hash[SENDER_FIELD_KEY]).each do |translation|
-          return translation.get_value(hash) if translation.match?(hash)
+          next unless translation.match?(hash)
+
+          return FieldTranslation::TranslationResult.success(
+            translation.get_value(hash))
         end
 
-        return nil
+        FieldTranslation::TranslationResult.fail(self, hash)
       end
     end
 
@@ -25,6 +28,32 @@ module FieldTranslation
 
     def match?(*)
       fail 'match? must be defined'
+    end
+  end
+
+  # The result of a field translation attempt.
+  class TranslationResult
+    attr_accessor :success, :message, :value
+
+    class << self
+      def fail(klass, hash_values)
+        result = TranslationResult.new
+        result.success = false
+        result.message = I18n.t(
+          'default.error',
+          :name => klass.name.underscore.humanize[0..-13].downcase,
+          :purchase_order_number => hash_values[:po_number],
+          :line_number => hash_values[:line_nbr],
+          :scope => :field_translation)
+        result
+      end
+
+      def success(value)
+        result = TranslationResult.new
+        result.success = true
+        result.value = value
+        result
+      end
     end
   end
 end

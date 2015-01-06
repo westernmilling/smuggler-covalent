@@ -29,19 +29,40 @@ RSpec.describe QuantityTranslation, :type => :model do
     let(:sender_value) { Faker::Number.number(12) }
     subject(:translate) { QuantityTranslation.translate(hash) }
 
-    context 'valid expression' do
+    context 'when expression is valid' do
       let(:expression) { 'quantity / dtl_user_defined_field3' }
 
-      it 'translates the value correctly' do
-        expect(translate).to eq(20)
-      end
+      its(:success) { is_expected.to be_truthy }
+      its(:value) { is_expected.to eq(20) }
     end
 
-    context 'invalid expression' do
+    context 'when expression is invalid' do
       let(:expression) { 'quantity *' }
 
       it 'raises a runtime error' do
         expect { translate }.to raise_exception(RuntimeError, /no rule matched/)
+      end
+    end
+
+    context 'when there are no translations' do
+      let(:expression) { 'quantity / dtl_user_defined_field3' }
+      let(:hash) do
+        {
+          :po_number => Faker::Number.number(10),
+          :line_nbr => 1,
+          :sender => Faker::Number.number(12)
+        }
+      end
+
+      its(:success) { is_expected.to be_falsey }
+      its(:message) do
+        is_expected.to(
+          eq(I18n.t('default.error',
+                    :name => 'quantity',
+                    :purchase_order_number => hash[:po_number],
+                    :line_number => hash[:line_nbr],
+                    :scope => :field_translation))
+        )
       end
     end
   end

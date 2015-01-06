@@ -1,6 +1,6 @@
 # Represents a customer purchase order.
 class PurchaseOrder < ActiveRecord::Base
-  belongs_to :ship_to_entity, :class => Entity
+  belongs_to :ship_to_entity, :class_name => Entity
   has_many(
     :lines,
     :autosave => true,

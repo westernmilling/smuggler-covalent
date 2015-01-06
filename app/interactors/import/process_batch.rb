@@ -61,15 +61,26 @@ module Import
     end
 
     def check_translation(klass, line)
-      return if klass.translate(line.value_hash)
+      translation_result = klass.translate(line.value_hash)
+
+      return if translation_result.success
 
       line.status = :failed
       context.batch.status = :failed
       context.batch.add_remark(
         klass.to_s,
         line,
-        "#{klass.name.underscore.humanize[0..-13]} failed translation",
+        translation_result.message,
         :error)
+      # return if klass.translate(line.value_hash)
+
+      # line.status = :failed
+      # context.batch.status = :failed
+      # context.batch.add_remark(
+      #   klass.to_s,
+      #   line,
+      #   "#{klass.name.underscore.humanize[0..-13]} failed translation",
+      #   :error)
     end
 
     def init_batch_lines

@@ -1,4 +1,6 @@
+# rubocop:disable all
 module Smuggler
+  # Factory girl helpers
   module FactoryGirlHelpers
     # Creates a new import file.
     #
@@ -6,9 +8,9 @@ module Smuggler
     def create_import_file(lines)
       file = Tempfile.new(['purchase_orders', '.csv'])
 
-      CSV.open(file, "w") do |csv|
+      CSV.open(file, 'w') do |csv|
         lines.each do |line|
-          csv << line.map { |x| x.to_s }
+          csv << line.map(&:to_s)
         end
       end
 
@@ -20,20 +22,20 @@ module Smuggler
     # @param  array_of_po_hash [Array] purchase orders to create
     def create_import_file_lines(array_of_po_hash)
       fields = [
-          'Sender',
-          'Receiver', 
-          'PO Number', 
-          'PO Date',
-          'Ship-To Location',
-          'Line Nbr',
-          'Quantity',
-          'Unit Price',
-          'UOM  Basis of UOM',
-          'Buyer Item Nbr',
-          'dtl_user_defined_field3',
-          'Delivery Date Requested',
-          'Last Delivery Date Requested'
-        ]
+        'Sender',
+        'Receiver',
+        'PO Number',
+        'PO Date',
+        'Ship-To Location',
+        'Line Nbr',
+        'Quantity',
+        'Unit Price',
+        'UOM  Basis of UOM',
+        'Buyer Item Nbr',
+        'dtl_user_defined_field3',
+        'Delivery Date Requested',
+        'Last Delivery Date Requested'
+      ]
       lines = []
       lines << fields
 
@@ -74,3 +76,4 @@ module Smuggler
     end
   end
 end
+# rubocop:enable all

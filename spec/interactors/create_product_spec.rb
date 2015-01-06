@@ -1,17 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe CreateProduct, :type => :interactor do
-
   let(:name) { Faker::Commerce.product_name }
   let(:reference) { Faker::Number.number(8) }
   let(:source) { nil }
   let(:uuid) { nil }
-  subject(:context) { 
+  subject(:context) do
     CreateProduct.call(
-      :name => name, 
-      :reference => reference, 
-      :uuid => uuid) 
-  }
+      :name => name,
+      :reference => reference,
+      :uuid => uuid)
+  end
 
   context 'valid parameters' do
     describe 'context' do
@@ -57,5 +56,4 @@ RSpec.describe CreateProduct, :type => :interactor do
       its(:errors) { is_expected.not_to be_empty }
     end
   end
-
 end

@@ -32,25 +32,35 @@ RSpec.describe UnitOfMeasureTranslation, :type => :model do
     context 'when a translation exists' do
       let(:hash) do
         {
+          :po_number => Faker::Number.number(10),
+          :line_nbr => 1,
           :sender => sender_value,
           :uom_basis_of_uom => source_value
         }
       end
 
-      it 'returns a matching product' do
-        expect(translate).to eq(unit_of_measure)
-      end
+      its(:success) { is_expected.to be_truthy }
+      its(:value) { is_expected.to eq(unit_of_measure) }
     end
 
     context 'when a translation does not exist' do
       let(:hash) do
         {
+          :po_number => Faker::Number.number(10),
+          :line_nbr => 1,
           :sender => Faker::Number.number(12),
           :uom_basis_of_uom => source_value }
       end
 
-      it 'returns nil' do
-        expect(translate).to be_nil
+      its(:success) { is_expected.to be_falsey }
+      its(:message) do
+        is_expected.to(
+          eq(I18n.t('default.error',
+                    :name => 'unit of measure',
+                    :purchase_order_number => hash[:po_number],
+                    :line_number => hash[:line_nbr],
+                    :scope => :field_translation))
+        )
       end
     end
   end

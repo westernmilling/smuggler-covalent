@@ -1,0 +1,4 @@
+en:
+  field_translation:
+    default:
+      error: 'Unable to translate %{name} for PO %{purchase_order_number}, line %{line_number}'

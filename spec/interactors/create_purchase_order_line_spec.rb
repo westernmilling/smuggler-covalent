@@ -7,7 +7,7 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
   let(:unit_of_measure_id) { nil }
   let(:unit_price) { nil }
   let(:user) { create(:user) }
-  subject(:context) {
+  subject(:context) do 
     with_versioning do
       CreatePurchaseOrderLine.call(
         :product_id => product_id,
@@ -17,7 +17,7 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
         :unit_price => unit_price,
         :user => user)
     end
-  }
+  end
 
   context 'first line with valid parameters' do
     let(:product_id) { create(:product).id }
@@ -49,11 +49,12 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
 
   context 'second line with valid parameters' do
     let(:purchase_order) { create(:purchase_order) }
-    before {
-      create(:purchase_order_line,
+    before do
+      create(
+        :purchase_order_line,
         :line_number => 1,
         :purchase_order => purchase_order)
-    }
+    end
 
     subject(:purchase_order_line) { context.purchase_order_line }
 
@@ -76,5 +77,4 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
       its(:errors) { is_expected.not_to be_empty }
     end
   end
-
 end

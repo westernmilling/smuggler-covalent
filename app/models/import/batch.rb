@@ -43,7 +43,7 @@ module Import
           po.status = :new
           po.earliest_request_date = import_hash[:delivery_date_requested]
           po.latest_request_date = import_hash[:last_delivery_date_requested]
-          po.ship_to_entity = EntityTranslation.translate(import_hash)
+          po.ship_to_entity = EntityTranslation.translate(import_hash).value
         end
       end
 
@@ -51,11 +51,11 @@ module Import
         PurchaseOrder::Line.new do |po_line|
           po_line.purchase_order = po
           po_line.line_number = import_hash[:line_nbr].to_i
-          po_line.product = ProductTranslation.translate(import_hash)
-          po_line.quantity = QuantityTranslation.translate(import_hash)
-          po_line.unit_price = PriceTranslation.translate(import_hash)
+          po_line.product = ProductTranslation.translate(import_hash).value
+          po_line.quantity = QuantityTranslation.translate(import_hash).value
+          po_line.unit_price = PriceTranslation.translate(import_hash).value
           po_line.unit_of_measure =
-            UnitOfMeasureTranslation.translate(import_hash)
+            UnitOfMeasureTranslation.translate(import_hash).value
         end
       end
     end

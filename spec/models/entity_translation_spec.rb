@@ -32,26 +32,36 @@ RSpec.describe EntityTranslation, :type => :model do
     context 'with a present translation' do
       let(:hash) do
         {
+          :po_number => Faker::Number.number(10),
+          :line_nbr => 1,
           :sender => sender_value,
           :ship_to_location => source_value
         }
       end
 
-      it 'returns a matching entity' do
-        expect(translate).to eq(entity)
-      end
+      its(:success) { is_expected.to be_truthy }
+      its(:value) { is_expected.to eq(entity) }
     end
 
     context 'with no translation present' do
       let(:hash) do
         {
+          :po_number => Faker::Number.number(10),
+          :line_nbr => 1,
           :sender => Faker::Number.number(12),
           :ship_to_location => source_value
         }
       end
 
-      it 'returns nil' do
-        expect(translate).to be_nil
+      its(:success) { is_expected.to be_falsey }
+      its(:message) do
+        is_expected.to(
+          eq(I18n.t('default.error',
+                    :name => 'entity',
+                    :purchase_order_number => hash[:po_number],
+                    :line_number => hash[:line_nbr],
+                    :scope => :field_translation))
+        )
       end
     end
   end

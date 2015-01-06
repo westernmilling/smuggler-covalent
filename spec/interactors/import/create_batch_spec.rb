@@ -4,7 +4,7 @@ RSpec.describe Import::CreateBatch, :type => :interactor do
   let(:file) { create_import_file(import_lines) }
   let(:upload_file) { nil }
   let(:import_data) do
-    [ { :lines => [{}, {}, {}] } ]
+    [{ :lines => [{}, {}, {}] }]
   end
   let(:import_lines) { create_import_file_lines(import_data) }
   let(:user) { create(:user) }

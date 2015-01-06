@@ -346,7 +346,13 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
 
           its(:present?) { is_expected.to be_truthy }
           its(:remark_message) do
-            is_expected.to eq('Entity failed translation')
+            is_expected.to(
+              eq(I18n.t('default.error',
+                        :name => 'entity',
+                        :purchase_order_number => import_data[0][:number],
+                        :line_number => 1,
+                        :scope => :field_translation))
+            )
           end
           its(:remark_type) { is_expected.to eq(:error) }
         end
@@ -358,7 +364,13 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
 
           its(:present?) { is_expected.to be_truthy }
           its(:remark_message) do
-            is_expected.to eq('Price failed translation')
+            is_expected.to(
+              eq(I18n.t('default.error',
+                        :name => 'price',
+                        :purchase_order_number => import_data[0][:number],
+                        :line_number => 1,
+                        :scope => :field_translation))
+            )
           end
           its(:remark_type) { is_expected.to eq(:error) }
         end
@@ -370,7 +382,13 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
 
           its(:present?) { is_expected.to be_truthy }
           its(:remark_message) do
-            is_expected.to eq('Product failed translation')
+            is_expected.to(
+              eq(I18n.t('default.error',
+                        :name => 'product',
+                        :purchase_order_number => import_data[0][:number],
+                        :line_number => 1,
+                        :scope => :field_translation))
+            )
           end
           its(:remark_type) { is_expected.to eq(:error) }
         end
@@ -382,7 +400,13 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
 
           its(:present?) { is_expected.to be_truthy }
           its(:remark_message) do
-            is_expected.to eq('Quantity failed translation')
+            is_expected.to(
+              eq(I18n.t('default.error',
+                        :name => 'quantity',
+                        :purchase_order_number => import_data[0][:number],
+                        :line_number => 1,
+                        :scope => :field_translation))
+            )
           end
           its(:remark_type) { is_expected.to eq(:error) }
         end
@@ -394,7 +418,13 @@ RSpec.describe Import::ProcessBatch, :type => :interactor do
 
           its(:present?) { is_expected.to be_truthy }
           its(:remark_message) do
-            is_expected.to eq('Unit of measure failed translation')
+            is_expected.to(
+              eq(I18n.t('default.error',
+                        :name => 'unit of measure',
+                        :purchase_order_number => import_data[0][:number],
+                        :line_number => 1,
+                        :scope => :field_translation))
+            )
           end
           its(:remark_type) { is_expected.to eq(:error) }
         end

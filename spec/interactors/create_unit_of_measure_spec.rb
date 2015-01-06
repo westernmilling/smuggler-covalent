@@ -1,18 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe CreateUnitOfMeasure, :type => :interactor do
-
   let(:name) { Faker::Lorem.word }
   let(:reference) { Faker::Number.number(8) }
   let(:source) { nil }
   let(:uuid) { nil }
-  subject(:context) { 
+  subject(:context) do
     CreateUnitOfMeasure.call(
       :conversion_to_pounds => 1000,
-      :name => name, 
-      :reference => reference, 
-      :uuid => uuid) 
-  }
+      :name => name,
+      :reference => reference,
+      :uuid => uuid)
+  end
 
   context 'valid parameters' do
     describe 'context' do
@@ -36,7 +35,7 @@ RSpec.describe CreateUnitOfMeasure, :type => :interactor do
     describe 'context' do
       its(:failure?) { is_expected.to be_truthy }
       its(:message) { is_expected.to match(/invalid/i) }
-      its(:unit_of_measure) { is_expected.to be_present }      
+      its(:unit_of_measure) { is_expected.to be_present }
     end
 
     describe UnitOfMeasure do
@@ -46,5 +45,4 @@ RSpec.describe CreateUnitOfMeasure, :type => :interactor do
       its(:errors) { is_expected.not_to be_empty }
     end
   end
-
 end

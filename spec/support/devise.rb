@@ -3,12 +3,10 @@ require 'devise'
 include Warden::Test::Helpers
 Warden.test_mode!
 
-# REVIEW: Can we merge the ControllerHelpers and DeviseHelpers
-
 # RSpec controller helpers
 module ControllerHelpers
   # rubocop:disable Metrics/AbcSize
-  def sign_in(user)# = double('user'))
+  def sign_in(user = double('user'))
     if user.nil?
       allow(request.env['warden']).to receive(:authenticate!)
         .and_throw(:warden, :scope => :user)
@@ -21,16 +19,16 @@ module ControllerHelpers
   # rubocop:enable Metrics/AbcSize
 end
 
-module DeviseHelpers
+# Feature helpers
+module FeatureHelpers
   def sign_in_as(user)
     login_as(user, :scope => :user)
   end
 end
 
 RSpec.configure do |config|
-  # config.include Devise::TestHelpers, :type => :controller
-  config.include ControllerHelpers#, :type => :controller
-  # config.include FeatureHelpers, :type => :controller
-  # config.include FeatureHelpers, :type => :feature
-  config.include DeviseHelpers
+  config.include Devise::TestHelpers, :type => :controller
+  config.include ControllerHelpers, :type => :controller
+  config.include FeatureHelpers, :type => :feature
+  config.include FeatureHelpers, :type => :request
 end

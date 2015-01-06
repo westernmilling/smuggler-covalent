@@ -4,7 +4,7 @@ feature 'user creates new unit of measure translation' do
   background { sign_in_as(user) }
 
   given(:user) { create(:user, :confirmed) }
-  
+
   scenario 'visit new page' do
     visit new_unit_of_measure_translation_path
 
@@ -12,17 +12,22 @@ feature 'user creates new unit of measure translation' do
   end
 
   # TODO: Add a javascript driver so we can test the Entity typeahead
-
   scenario 'saves with valid details' do
     visit new_unit_of_measure_translation_path
 
     name = Faker::Company.name
     unit_of_measure = create(:unit_of_measure)
 
-    find(:xpath, "//input[@id='unit_of_measure_translation_unit_of_measure_id']").set unit_of_measure.id
-    fill_in 'unit_of_measure_translation_unit_of_measure_display_string', :with => unit_of_measure.name
-    fill_in 'unit_of_measure_translation_sender_value', :with => Faker::Number.number(12)
-    fill_in 'unit_of_measure_translation_source_field', :with => 'UOM  Basis of UOM'
+    find(
+      :xpath,
+      "//input[@id='unit_of_measure_translation_unit_of_measure_id']").
+      set unit_of_measure.id
+    fill_in 'unit_of_measure_translation_unit_of_measure_display_string',
+            :with => unit_of_measure.name
+    fill_in 'unit_of_measure_translation_sender_value',
+            :with => Faker::Number.number(12)
+    fill_in 'unit_of_measure_translation_source_field',
+            :with => 'UOM  Basis of UOM'
     fill_in 'unit_of_measure_translation_source_value', :with => 'EA'
 
     click_button 'Save'
@@ -39,5 +44,5 @@ feature 'user creates new unit of measure translation' do
   end
 
   # scenario 'user is not permitted' do
-  
+
 end
