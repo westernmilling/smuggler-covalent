@@ -91,7 +91,7 @@ module Import
     end
 
     def read_upload_file
-      Paperclip.io_adapters.for(self.upload).read
+      Paperclip.io_adapters.for(upload).read
     end
 
     def select_line_by_number(line_number)

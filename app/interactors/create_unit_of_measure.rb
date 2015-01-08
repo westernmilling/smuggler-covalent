@@ -12,9 +12,8 @@ class CreateUnitOfMeasure
   end
 
   # Set the defaults for the unit of measure instance
-  def after_build 
+  def after_build
     model.uuid = UUID.generate(:compact)
     model.source = source ||= :local
   end
-
 end

@@ -7,7 +7,7 @@ class Import::Batch::Line < ActiveRecord::Base
   acts_as_paranoid
 
   belongs_to :batch, :class => Import::Batch, :foreign_key => :import_batch_id
-  belongs_to :purchase_order#, :class => PurchaseOrder
+  belongs_to :purchase_order
   belongs_to :purchase_order_line, :class => PurchaseOrder::Line
   has_many(
     :values,

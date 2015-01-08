@@ -32,15 +32,15 @@ class Import::BatchesController < ApplicationController
     @import_batches = Import::Batch.all
   end
 
-  def new ; end
+  def new; end
 
-  def show ; end
+  def show; end
 
   protected
 
   def batch_params
     params.require(:import_batch_input).permit(:upload_file)
-  rescue ActionController::ParameterMissing ; {}
+  rescue ActionController::ParameterMissing; {}
   end
 
   def build_batch

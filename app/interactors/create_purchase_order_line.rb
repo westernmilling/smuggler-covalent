@@ -11,7 +11,7 @@ class CreatePurchaseOrderLine
     end
   end
 
-  def after_build 
+  def after_build
     context.purchase_order_line.line_number = get_next_line_number
   end
 

@@ -5,13 +5,10 @@ class Import::CreateBatch
 
   def call
     model.whodunnit(context.user) { model.save! }
-    
+
     # TODO: Queue processing
 
     context.message = 'Batch successfully created'
-    # else
-    #   fail!(:message => 'Batch not created') 
-    # end
   end
 
   def after_build
@@ -32,10 +29,9 @@ class Import::CreateBatch
     base_params.except(:upload_file, :user)
   end
 
-  def context_key ; :batch ; end
+  def context_key; :batch ; end
 
   def klazz
     Import::Batch
   end
-
 end
