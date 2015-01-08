@@ -15,7 +15,10 @@ class QuantityTranslation < ActiveRecord::Base
   end
 
   def hash_values_to_f(hash)
-    hash.inject({}) { |h, (k, v)| h[k] = v.to_f; h }
+    hash.inject({}) do |h, (k, v)|
+      h[k] = v.to_f
+      h
+    end
   end
 
   def match?(*)

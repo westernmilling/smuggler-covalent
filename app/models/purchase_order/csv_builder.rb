@@ -11,9 +11,9 @@ class PurchaseOrder
     def initialize
       @csv_lines = []
       @purchase_orders = []
-      @fields = PurchaseOrder::DenormalizedLine.
-        properties.
-        collect { |k, v| k }
+      @fields = PurchaseOrder::DenormalizedLine
+        .properties
+        .collect { |k, _v| k }
     end
 
     def add(po)
@@ -25,7 +25,7 @@ class PurchaseOrder
       lines = PurchaseOrder::DenormalizedLine.create_instances(po)
       lines.each do |line|
         @csv_lines
-        row = CSV::Row.new([],[],false)
+        row = CSV::Row.new([], [], false)
         @fields.each do |key|
           row << line[key]
         end
@@ -35,6 +35,5 @@ class PurchaseOrder
 
       self
     end
-
   end
 end

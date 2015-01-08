@@ -30,8 +30,8 @@ class Import::Batch::Line < ActiveRecord::Base
   end
 
   def attach_purchase_order_line(line)
-    self.purchase_order = line.purchase_order
-    self.purchase_order_line = line
+    purchase_order = line.purchase_order
+    purchase_order_line = line
   end
 
   def value_hash
