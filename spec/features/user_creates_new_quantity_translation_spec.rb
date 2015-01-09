@@ -11,8 +11,6 @@ feature 'User creates new quantity translation' do
     expect(page).to have_content(/new quantity translation/i)
   end
 
-  # TODO: Add a javascript driver so we can test the Entity typeahead
-
   scenario 'saves with valid details' do
     visit new_quantity_translation_path
 

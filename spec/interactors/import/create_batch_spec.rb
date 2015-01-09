@@ -53,7 +53,9 @@ RSpec.describe Import::CreateBatch, :type => :interactor do
           'Content-Disposition: form-data',
           'name="import_batch_input[upload_file]"',
           "filename=\"#{File.basename(file.path)}\"",
-          'Content-Type: text/csv\r\n'].join(';'))
+          'Content-Type: text/csv\r\n'
+        ].join(';')
+      )
     end
 
     describe 'context' do

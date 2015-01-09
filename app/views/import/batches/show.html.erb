@@ -2,6 +2,8 @@
 
 <%= @import_batch.upload_file_name %>
 
+<!-- Only show the delete link if the batch status has not been completed -->
+<%= link_to 'Delete', [@import_batch], :method => :delete %>
 <!-- Only show the process link if the batch status is new or fail -->
 <%= link_to 'Process', [:process, @import_batch], :method => :put %>
 

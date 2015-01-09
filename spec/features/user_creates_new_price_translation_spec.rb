@@ -11,13 +11,13 @@ feature 'user creates new price translation' do
     expect(page).to have_content(/new price translation/i)
   end
 
-  # TODO: Add a javascript driver so we can test the Entity typeahead
-
   scenario 'saves with valid details' do
     visit new_price_translation_path
 
-    fill_in 'price_translation_sender_value', :with => Faker::Number.number(12)
-    fill_in 'price_translation_expression', :with => 'unit_price * dtl_user_defined_field3'
+    fill_in 'price_translation_sender_value',
+            :with => Faker::Number.number(12)
+    fill_in 'price_translation_expression',
+            :with => 'unit_price * dtl_user_defined_field3'
 
     click_button 'Save'
 
@@ -33,5 +33,4 @@ feature 'user creates new price translation' do
   end
 
   # scenario 'user is not permitted' do
-  
 end

@@ -7,5 +7,4 @@ RSpec.describe UnitOfMeasure, :type => :model do
   it { should validate_presence_of(:reference) }
   it { should validate_presence_of(:uuid) }
   it { should validate_presence_of(:source) }
-
 end

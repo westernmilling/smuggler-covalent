@@ -17,13 +17,15 @@ feature 'user creates new purchase order line' do
   scenario 'with valid details' do
     visit new_purchase_order_line_path(purchase_order)
 
-    find(:xpath, "//input[@id='purchase_order_line_product_id']").
-      set(product.id)
+    find(:xpath, "//input[@id='purchase_order_line_product_id']")
+      .set(product.id)
     fill_in(
       'purchase_order_line_product_display_string',
       :with => product.name)
-    find(:xpath, "//input[@id='purchase_order_line_unit_of_measure_id']").set unit_of_measure.id
-    fill_in 'purchase_order_line_unit_of_measure_display_string', :with => unit_of_measure.name
+    find(:xpath, "//input[@id='purchase_order_line_unit_of_measure_id']")
+      .set unit_of_measure.id
+    fill_in 'purchase_order_line_unit_of_measure_display_string',
+            :with => unit_of_measure.name
     fill_in 'purchase_order_line_quantity', :with => 10
     fill_in 'purchase_order_line_unit_price', :with => 100
 

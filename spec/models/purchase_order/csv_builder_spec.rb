@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do 
+RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
   def create_po(line_count = 1)
     po = create(:purchase_order)
     (1..line_count).each do |line_number|
@@ -31,8 +31,8 @@ RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
     end
 
     it 'increments the number of purchase orders by one' do
-      expect { subject }.to change { builder.purchase_orders.length }.
-        from(0).to(1)
+      expect { subject }.to change { builder.purchase_orders.length }
+        .from(0).to(1)
     end
   end
 

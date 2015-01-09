@@ -20,9 +20,11 @@ class PurchaseOrder < ActiveRecord::Base
   # validates(
   #   :lines,
   #   :length => { :minimum => 1, :message => 'must have at least one line' })
-  validates_presence_of :date
-  validates_presence_of :number
-  validates_presence_of :ship_to_entity
-  validates_presence_of :earliest_request_date
-  validates_presence_of :latest_request_date
+  validates \
+    :date,
+    :number,
+    :ship_to_entity,
+    :earliest_request_date,
+    :latest_request_date,
+    :presence => true
 end

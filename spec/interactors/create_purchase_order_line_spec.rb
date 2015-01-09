@@ -7,7 +7,7 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
   let(:unit_of_measure_id) { nil }
   let(:unit_price) { nil }
   let(:user) { create(:user) }
-  subject(:context) do 
+  subject(:context) do
     with_versioning do
       CreatePurchaseOrderLine.call(
         :product_id => product_id,

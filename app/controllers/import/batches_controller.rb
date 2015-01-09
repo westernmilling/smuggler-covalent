@@ -22,7 +22,10 @@ class Import::BatchesController < ApplicationController
 
   def destroy
     if @import_batch.destroy
-      notice_redirect(@import_batch, 'Batch deleted', [:import_batches])
+      notice_redirect(
+        @import_batch,
+        'Batch was successfully deleted',
+        [:import_batches])
     else
       alert_redirect(@import_batch, 'Failed to delete batch', [:import_batches])
     end
@@ -50,5 +53,4 @@ class Import::BatchesController < ApplicationController
   def load_batch
     @import_batch = Import::Batch.find(params[:id])
   end
-
 end

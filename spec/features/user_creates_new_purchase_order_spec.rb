@@ -21,11 +21,13 @@ feature 'user creates new purchase order' do
     latest_request_date = Time.now.to_date + 1.week
 
 
-    find(:xpath, "//input[@id='purchase_order_ship_to_entity_id']").set entity.id
+    find(:xpath, "//input[@id='purchase_order_ship_to_entity_id']")
+      .set entity.id
     fill_in 'purchase_order_ship_to_entity_display_string', :with => entity.name
     fill_in 'purchase_order_date', :with => purchase_order_date
     fill_in 'purchase_order_number', :with => purchase_order_number
-    fill_in 'purchase_order_earliest_request_date', :with => earliested_request_date
+    fill_in 'purchase_order_earliest_request_date',
+            :with => earliested_request_date
     fill_in 'purchase_order_latest_request_date', :with => latest_request_date
 
     click_button 'Save'
@@ -40,5 +42,4 @@ feature 'user creates new purchase order' do
 
     expect(page).not_to have_content(/created/i)
   end
-
 end

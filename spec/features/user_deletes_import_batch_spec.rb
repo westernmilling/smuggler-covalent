@@ -4,17 +4,17 @@ feature 'User deletes import batch' do
   background { sign_in_as(user) }
 
   given(:file) { build(:import_file) }
+  given(:import_batch) { create(:import_batch, :upload => file) }
   given(:user) { create(:user, :confirmed) }
   
   scenario 'batch is deleted' do
-    visit entities_path
+    visit import_batch_path(import_batch)
 
-    # TODO: Click the first delete button
+    click_link 'Delete'
 
-    # TODO: Check for a delete confirmation flash
+    import_batch.reload
 
-    # TODO: Check that the batch has been deleted
-    # Exists with .with_deleted and has deleted_at
-    # Does not exist in a normal query
+    expect(import_batch.deleted_at).to be_present
+    expect(page).to have_content(/was successfully deleted/i)
   end
 end

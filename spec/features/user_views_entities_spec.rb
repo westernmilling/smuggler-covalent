@@ -18,5 +18,4 @@ feature 'User views entities' do
 
     expect(page).not_to have_content(/no entities/i)
   end
-
 end

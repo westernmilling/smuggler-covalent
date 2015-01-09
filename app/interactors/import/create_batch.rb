@@ -6,14 +6,12 @@ class Import::CreateBatch
   def call
     model.whodunnit(context.user) { model.save! }
 
-    # TODO: Queue processing
-
     context.message = 'Batch successfully created'
   end
 
   def after_build
     model.status = :new
-    # TODO: Refactor this
+    # REVIEW: Does this need to be refactored
     if context.upload_file
       if context.upload_file.is_a?(String)
         File.open(context.upload_file, 'r') do |file|

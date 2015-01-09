@@ -10,12 +10,12 @@ module HashExtensions
     #
     def to_snake_keys(value = self)
       case value
-        when Array
-          value.map { |v| to_snake_keys(v) }
-        when Hash
-          Hash[value.map { |k, v| [underscore_key(k), to_snake_keys(v)] }]
-        else
-          value
+      when Array
+        value.map { |v| to_snake_keys(v) }
+      when Hash
+        Hash[value.map { |k, v| [underscore_key(k), to_snake_keys(v)] }]
+      else
+        value
       end
     end
 

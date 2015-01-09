@@ -15,7 +15,7 @@ class QuantityTranslation < ActiveRecord::Base
   end
 
   def hash_values_to_f(hash)
-    hash.inject({}) do |h, (k, v)|
+    hash.each_with_object({}) do |(k, v), h|
       h[k] = v.to_f
       h
     end

@@ -1,6 +1,8 @@
 namespace :smuggler do
   desc 'Creates a new user'
-  task :create_user, [:email_address, :roles, :password] => :environment do |t, args|
+  task(
+    :create_user,
+    [:email_address, :roles, :password] => :environment) do |t, args|
     user = User.where { email == args.email_address }.first
     user ||= User.new do |u|
       u.email = args.email_address
@@ -13,5 +15,4 @@ namespace :smuggler do
 
     user.save!
   end
-  
 end

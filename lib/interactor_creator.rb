@@ -6,14 +6,14 @@ module Interactor::Creator
     before :after_build
     before :validate
 
-    def after_build ; end
+    def after_build; end
 
     def base_params
       context.to_h.except(context_key)
     end
 
     def build
-      self.context[context_key] = klazz.new(build_params)
+      context[context_key] = klazz.new(build_params)
     end
 
     def build_params
@@ -33,10 +33,10 @@ module Interactor::Creator
     end
     
     # Prevalidate the new model before attempting to persist.
-    def validate 
-      unless model.valid?
-        context.fail!(:message => 'Invalid details')
-      end
+    def validate
+      return if model.valid?
+
+      context.fail!(:message => 'Invalid details')
     end
   end
 end
