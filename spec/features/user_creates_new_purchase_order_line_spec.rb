@@ -4,7 +4,7 @@ feature 'user creates new purchase order line' do
   background { sign_in_as(user) }
 
   given(:user) { create(:user, :confirmed) }
-  given(:purchase_order) { create(:purchase_order, :created_by => user) }
+  given(:purchase_order) { create(:purchase_order) }
   given(:product) { create(:product) }
   given(:unit_of_measure) { create(:unit_of_measure) }
 
@@ -17,10 +17,15 @@ feature 'user creates new purchase order line' do
   scenario 'with valid details' do
     visit new_purchase_order_line_path(purchase_order)
 
-    find(:xpath, "//input[@id='purchase_order_line_product_id']").set product.id
-    fill_in 'purchase_order_line_product_display_string', :with => product.name
-    find(:xpath, "//input[@id='purchase_order_line_unit_of_measure_id']").set unit_of_measure.id
-    fill_in 'purchase_order_line_unit_of_measure_display_string', :with => unit_of_measure.name
+    find(:xpath, "//input[@id='purchase_order_line_product_id']")
+      .set(product.id)
+    fill_in(
+      'purchase_order_line_product_display_string',
+      :with => product.name)
+    find(:xpath, "//input[@id='purchase_order_line_unit_of_measure_id']")
+      .set unit_of_measure.id
+    fill_in 'purchase_order_line_unit_of_measure_display_string',
+            :with => unit_of_measure.name
     fill_in 'purchase_order_line_quantity', :with => 10
     fill_in 'purchase_order_line_unit_price', :with => 100
 
@@ -36,5 +41,4 @@ feature 'user creates new purchase order line' do
 
     expect(page).not_to have_content(/created/i)
   end
-
 end

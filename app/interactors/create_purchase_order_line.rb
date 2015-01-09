@@ -11,8 +11,12 @@ class CreatePurchaseOrderLine
     end
   end
 
-  def create
+  def after_build
     context.purchase_order_line.line_number = get_next_line_number
+  end
+
+  def build_params
+    base_params.except(:user)
   end
 
   def get_next_line_number

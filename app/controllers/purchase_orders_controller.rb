@@ -1,3 +1,4 @@
+# PurchaseOrdersController
 class PurchaseOrdersController < ApplicationController
   respond_to(:csv, :html)
 
@@ -5,11 +6,12 @@ class PurchaseOrdersController < ApplicationController
 
   def create
     context = CreatePurchaseOrder.call(
-      purchase_order_params.merge(:created_by => current_user))
+      purchase_order_params.merge(:user => current_user))
 
     if context.success?
-      notice_redirect(context.purchase_order, 
-        context.message, 
+      notice_redirect(
+        context.purchase_order,
+        context.message,
         [context.purchase_order])
     else
       respond_with(@purchase_order = context.purchase_order.decorate)
@@ -28,8 +30,10 @@ class PurchaseOrdersController < ApplicationController
     respond_to do |format|
       format.html
       format.csv {
+        builder = PurchaseOrder::CsvBuilder.new
+
         send_data(
-          PurchaseOrder::CsvBuilder.new.add(@purchase_order).csv_lines.join("\n"),
+          builder.add(@purchase_order).csv_lines.join("\n"),
           :type => 'text/csv; charset=utf-8; header=present',
           :filename => 'purchase_order.csv',
           :disposition => 'attachment')
@@ -43,10 +47,10 @@ class PurchaseOrdersController < ApplicationController
     params.
       require(:purchase_order).
       permit(
-        :ship_to_entity_id, 
-        :date, 
-        :number, 
-        :earliest_request_date, 
+        :ship_to_entity_id,
+        :date,
+        :number,
+        :earliest_request_date,
         :latest_request_date)
   rescue ActionController::ParameterMissing
     {}

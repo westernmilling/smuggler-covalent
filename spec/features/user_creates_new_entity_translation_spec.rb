@@ -8,15 +8,12 @@ feature 'user creates new entity translation' do
   scenario 'visit new page' do
     visit new_entity_translation_path
 
-    # TODO: Add some expectations here
+    expect(page).to have_content(/new entity/i)
   end
-
-  # TODO: Add a javascript driver so we can test the Entity typeahead
 
   scenario 'saves with valid details' do
     visit new_entity_translation_path
 
-    name = Faker::Company.name
     entity = create(:entity)
 
     find(:xpath, "//input[@id='entity_translation_entity_id']").set entity.id
@@ -39,5 +36,4 @@ feature 'user creates new entity translation' do
   end
 
   # scenario 'user is not permitted' do
-  
 end

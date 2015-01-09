@@ -1,10 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do 
+RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
   def create_po(line_count = 1)
-    po = create(:purchase_order) 
+    po = create(:purchase_order)
     (1..line_count).each do |line_number|
-      po.lines << create(:purchase_order_line, :line_number => line_number, :purchase_order => po)
+      po.lines << create(
+        :purchase_order_line,
+        :line_number => line_number,
+        :purchase_order => po)
     end
     po.save!
     po
@@ -28,7 +31,8 @@ RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
     end
 
     it 'increments the number of purchase orders by one' do
-      expect { subject }.to change { builder.purchase_orders.length }.from(0).to(1)
+      expect { subject }.to change { builder.purchase_orders.length }
+        .from(0).to(1)
     end
   end
 
@@ -51,7 +55,7 @@ RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
         subject(:line) { lines[0] }
 
         it 'is a csv header' do
-          po = purchase_order
+          purchase_order
           expect(line).to eq(builder.fields.join(','))
         end
       end
@@ -60,21 +64,20 @@ RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
         subject(:line) { lines[1] }
 
         it 'is a csv version of the purchase order' do
-          po = purchase_order
-          expect(line).to eq("#{po.earliest_request_date},\
-#{po.latest_request_date},\
-#{po.date},\
-#{po.number},\
-#{po.ship_to_entity.reference},\
-#{po.lines[0].product.reference},\
-#{po.lines[0].quantity},\
-#{po.lines[0].line_number},\
-#{po.lines[0].unit_price}\
+          purchase_order
+          expect(line).to eq("#{purchase_order.earliest_request_date},\
+#{purchase_order.latest_request_date},\
+#{purchase_order.date},\
+#{purchase_order.number},\
+#{purchase_order.ship_to_entity.reference},\
+#{purchase_order.lines[0].product.reference},\
+#{purchase_order.lines[0].quantity},\
+#{purchase_order.lines[0].line_number},\
+#{purchase_order.lines[0].unit_price}\
 ")
         end
       end
     end
-
   end
 
   context 'with one purchase order having 2 lines' do
@@ -107,10 +110,10 @@ RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
   end
 
   context 'with two purchase orders' do
-    before { 
+    before do
       builder.add(create_po)
       builder.add(create_po)
-    }
+    end
 
     describe '.purchase_orders' do
       subject { builder.purchase_orders }
@@ -118,5 +121,4 @@ RSpec.describe PurchaseOrder::CsvBuilder, :type => :model do
       its(:length) { is_expected.to eq(2) }
     end
   end
-
 end

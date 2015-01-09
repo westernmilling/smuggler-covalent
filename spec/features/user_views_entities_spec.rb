@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-feature 'user views entities' do
+feature 'User views entities' do
   background { sign_in_as(user) }
 
   given(:user) { create(:user, :confirmed) }
-  
+
   scenario 'there are no entities' do
     visit entities_path
 
@@ -18,5 +18,4 @@ feature 'user views entities' do
 
     expect(page).not_to have_content(/no entities/i)
   end
-  
 end

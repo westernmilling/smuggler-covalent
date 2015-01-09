@@ -26,5 +26,4 @@ feature 'user creates new unit of measure' do
 
     expect(page).not_to have_content(/created/i)
   end
-  
 end

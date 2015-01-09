@@ -1,24 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
-
   let(:product_id) { nil }
   let(:purchase_order_id) { nil }
   let(:quantity) { nil }
   let(:unit_of_measure_id) { nil }
   let(:unit_price) { nil }
   let(:user) { create(:user) }
-  subject(:context) {
-    with_versioning do 
-      CreatePurchaseOrderLine.call(      
+  subject(:context) do
+    with_versioning do
+      CreatePurchaseOrderLine.call(
         :product_id => product_id,
         :purchase_order_id => purchase_order_id,
         :quantity => quantity,
         :unit_of_measure_id => unit_of_measure_id,
         :unit_price => unit_price,
-        :created_by => user)
+        :user => user)
     end
-  }
+  end
 
   context 'first line with valid parameters' do
     let(:product_id) { create(:product).id }
@@ -37,7 +36,6 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
       subject(:purchase_order_line) { context.purchase_order_line }
 
       its(:persisted?) { is_expected.to be_truthy }
-      its(:created_by) { is_expected.to be_present }
       its(:errors) { is_expected.to be_empty }
       its(:line_number) { is_expected.to eq(1) }
 
@@ -51,11 +49,12 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
 
   context 'second line with valid parameters' do
     let(:purchase_order) { create(:purchase_order) }
-    before {
-      create(:purchase_order_line, 
+    before do
+      create(
+        :purchase_order_line,
         :line_number => 1,
         :purchase_order => purchase_order)
-    }
+    end
 
     subject(:purchase_order_line) { context.purchase_order_line }
 
@@ -68,7 +67,7 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
     describe 'context' do
       its(:failure?) { is_expected.to be_truthy }
       its(:message) { is_expected.to match(/invalid/i) }
-      its(:purchase_order_line) { is_expected.to be_present }      
+      its(:purchase_order_line) { is_expected.to be_present }
     end
 
     describe PurchaseOrder::Line do
@@ -78,5 +77,4 @@ RSpec.describe CreatePurchaseOrderLine, :type => :interactor do
       its(:errors) { is_expected.not_to be_empty }
     end
   end
-
 end

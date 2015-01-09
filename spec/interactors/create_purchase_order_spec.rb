@@ -1,21 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe CreatePurchaseOrder, :type => :interactor do
-
   let(:date) { nil }
   let(:number) { nil }
   let(:earliest_request_date) { nil }
   let(:latest_request_date) { nil }
   let(:user) { create(:user) }
-  subject(:context) { 
-    CreatePurchaseOrder.call(
-      :ship_to_entity_id => ship_to_entity_id,
-      :date => date, 
-      :number => number, 
-      :earliest_request_date => earliest_request_date,
-      :latest_request_date => latest_request_date,
-      :created_by => user)
-  }
+  subject(:context) do
+    with_versioning do
+      CreatePurchaseOrder.call(
+        :ship_to_entity_id => ship_to_entity_id,
+        :date => date,
+        :number => number,
+        :earliest_request_date => earliest_request_date,
+        :latest_request_date => latest_request_date,
+        :user => user)
+    end
+  end
 
   context 'valid parameters' do
     let(:date) { Time.now.to_date }
@@ -34,8 +35,13 @@ RSpec.describe CreatePurchaseOrder, :type => :interactor do
       subject(:purchase_order) { context.purchase_order }
 
       its(:persisted?) { is_expected.to be_truthy }
-      its(:created_by) { is_expected.to be_present }
       its(:errors) { is_expected.to be_empty }
+
+      describe 'papertrail' do
+        it 'has 1 version' do
+          expect(purchase_order.versions.size).to eq(1)
+        end
+      end
     end
   end
 
@@ -45,7 +51,7 @@ RSpec.describe CreatePurchaseOrder, :type => :interactor do
     describe 'context' do
       its(:failure?) { is_expected.to be_truthy }
       its(:message) { is_expected.to match(/invalid/i) }
-      its(:purchase_order) { is_expected.to be_present }      
+      its(:purchase_order) { is_expected.to be_present }
     end
 
     describe PurchaseOrder do
@@ -55,5 +61,4 @@ RSpec.describe CreatePurchaseOrder, :type => :interactor do
       its(:errors) { is_expected.not_to be_empty }
     end
   end
-
 end

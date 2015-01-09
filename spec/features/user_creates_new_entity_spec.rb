@@ -32,5 +32,4 @@ feature 'user creates new entity' do
 
     expect(page).not_to have_content(/created/i)
   end
-
 end
